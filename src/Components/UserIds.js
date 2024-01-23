@@ -18,8 +18,9 @@ export default function UserIds({
           <Image
             src={user_image}
             alt="not found"
-            height={40}
-            width={40}
+            height={200}
+            width={210}
+            quality={100}
             className="h-10 w-10 rounded-full object-cover"
           />
           <span className="flex items-start justify-center flex-col">

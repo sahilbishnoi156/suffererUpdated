@@ -25,7 +25,7 @@ export default function SideProfile({ currentUser }) {
 
   useEffect(() => {
     if(suggestedUsers.length === 0){
-      if (window.innerWidth > 640) {
+      if (window.innerWidth > 700) {
         fetchSuggestedUsers();
       }
     }

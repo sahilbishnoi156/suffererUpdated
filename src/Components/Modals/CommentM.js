@@ -29,6 +29,17 @@ export default function CommentM({
   buttonData,
 }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [ smallWindow, setSmallWindow ] = React.useState(false)
+  const inputRef = React.useRef(null)
+
+  React.useEffect(() => {
+    if(inputRef.current){
+      inputRef.current.focus();
+    }
+    if (window.innerWidth < 700) {
+      setSmallWindow(true)
+    }
+  },[window.innerWidth])
 
   return (
     <div className="flex flex-col gap-2 ">
@@ -50,6 +61,7 @@ export default function CommentM({
         size={`${post?.image ? "xl" : "xl"}`}
         onOpenChange={onOpenChange}
         scrollBehavior={"inside"}
+        placement={`${smallWindow ? "top" : "center"}`}
       >
         <ModalContent className="bg-white dark:bg-[#151515] dark:text-white text-black ">
           {(onClose) => (
@@ -107,6 +119,7 @@ export default function CommentM({
                   >
                     <Input
                       type="text"
+                      ref={inputRef}
                       className="dark:text-white text-black bg-none"
                       minRows={1}
                       color="white"
@@ -275,7 +288,7 @@ export const CommentComponent = ({ item, getComments }) => {
           <div className="flex items-start justify-center gap-2 text-xs dark:text-gray-400 text-slate-500">
             <span>{difference.humanize()}</span>
             <span>{commentInfo?.likes?.number || 0} likes</span>
-            <span className="ml-4 text-xs group-hover:block hidden">
+            <span className="ml-4 text-xs ">
               <CommentInfoM
                 comment={item}
                 user={currentUserData?.user}

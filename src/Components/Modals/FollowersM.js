@@ -22,6 +22,7 @@ export default function FollowersM({ text, users, type, setIsGetUserClicked, fol
       <Modal
         isOpen={isOpen}
         backdrop="blur"
+        placement="top"
         onOpenChange={()=>{
           onOpenChange()
         }
@@ -41,7 +42,8 @@ export default function FollowersM({ text, users, type, setIsGetUserClicked, fol
                   <input
                     type="text"
                     className="bg-transparent outline-none w-full h-full"
-                    placeholder="Search Users"
+                    placeholder="Currently Disabled"
+                    disabled
                     // value={searchInput}
                     // onChange={handleUserSearch}
                   />

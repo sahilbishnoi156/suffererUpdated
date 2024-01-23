@@ -1,5 +1,6 @@
 "use client";
 import { useUserStore } from "@/stateManagment/zustand";
+import { Badge } from "@nextui-org/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 export default function BottomNav() {
@@ -27,7 +28,9 @@ export default function BottomNav() {
           href="/message"
           className="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-950"
         >
-          <i className="fa-brands fa-facebook-messenger"></i>
+           <Badge content={5} color="danger" className="border-none">
+            <i className="fa-brands fa-facebook-messenger"></i>
+            </Badge>
         </Link>
         <Link
           replace
@@ -51,7 +54,7 @@ export default function BottomNav() {
                 href={`/profile`}
                 replace
                 prefetch
-                className="text-xl flex items-center justify-start w-full px-5"
+                className="text-xl flex items-center justify-start px-5"
                 scroll={false}
               >
                 <img

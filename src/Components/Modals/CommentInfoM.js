@@ -18,6 +18,7 @@ export default function CommentInfoM({ comment, user, handleDelete }) {
         backdrop="opaque"
         isOpen={isOpen}
         onOpenChange={onOpenChange}
+        placement="center"
       >
         <ModalContent
           className={`bg-white dark:bg-[#151515] dark:text-white text-black `}
