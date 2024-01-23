@@ -1,5 +1,5 @@
-import User from "../../../../../models/user";
-import { connectToDB } from "../../../../../utils/database";
+import User from "@/models/user";
+import { connectToDB } from "@/utils/database";
 
 export const GET = async (request, { params }) => {
   const url = new URL(request.url);
@@ -16,14 +16,15 @@ export const GET = async (request, { params }) => {
 
     let userResults;
 
-    if (tabType === "followers") {
+    if (tabType === "Followers") {
       userResults = await fetchFollowersOrFollowings(foundUser.followers);
-    } else if (tabType === "followings") {
+    } else if (tabType === "Followings") {
       userResults = await fetchFollowersOrFollowings(foundUser.followings);
     } else {
       return new Response("Invalid tabType", { status: 400 });
     }
 
+    console.log(userResults)
     return new Response(JSON.stringify(userResults), { status: 200 });
   } catch (error) {
     console.error(error);
@@ -31,11 +32,15 @@ export const GET = async (request, { params }) => {
   }
 };
 
-async function fetchFollowersOrFollowings(ids) {
+async function fetchFollowersOrFollowings(users) {
   const userResults = await Promise.all(
-    ids.map(async (id) => {
-      const user = await User.findById(id);
-      return user;
+    users.map(async (user) => {
+      const foundUser = await User.findById(user._id.toString());
+      if(foundUser){
+        const data = { username:foundUser.username,image:foundUser.image, given_name:foundUser.given_name, family_name:foundUser.family_name }
+        return data;
+      }
+      return;
     })
   );
   return userResults;

@@ -5,7 +5,7 @@ export default function Jumbotron() {
     <section className="bg-white dark:bg-black h-screen w-screen absolute top-0 left-0 z-50 flex flex-col justify-center items-center">
       <div className="w-full h-1/4 flex sm:justify-start justify-center items-center pl-4">
         
-        <i className="fa-solid fa-hippo text-white text-6xl"></i>
+        <i className="fa-solid fa-hippo text-black text-6xl dark:text-white"></i>
       </div>
       <div className="py-8 h-3/4 px-4 mx-auto max-w-screen-xl text-center lg:py-16 flex flex-col gap-8">
         <div className="flex flex-col gap-2">

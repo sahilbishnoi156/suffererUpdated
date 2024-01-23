@@ -25,7 +25,7 @@ export const GET = async (request, { params }) => {
     // Combine user and post data
     const data = {
       user: foundUser,
-      posts: userPosts.sort((a, b) => b.date - a.date),
+      posts: userPosts.sort((a, b) => b.createdAt - a.createdAt),
     };
     
 

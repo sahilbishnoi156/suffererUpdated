@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useUserStore } from "@/stateManagment/zustand";
+import { Badge } from "@nextui-org/react";
 
 export default function Navbar() {
   const { currentUserData } = useUserStore();
@@ -116,7 +117,9 @@ export default function Navbar() {
             scroll={false}
             replace
           >
+            <Badge content={5} color="danger" className="border-none">
             <i className="fa-brands fa-facebook-messenger"></i>
+            </Badge>
             <span
               className={` navigation-items overflow-hidden text-lg`}
               style={navToggle ? openStyle : closeStyle}
@@ -130,7 +133,9 @@ export default function Navbar() {
             scroll={false}
             replace
           >
+             <Badge content={1} color="danger" className="border-none">
             <i className="fa-regular fa-heart"></i>
+            </Badge>
             <span
               className={` navigation-items overflow-hidden text-lg`}
               style={navToggle ? openStyle : closeStyle}
@@ -150,7 +155,8 @@ export default function Navbar() {
                 <img
                   src={currentUserData?.user?.image}
                   alt="not found"
-                  className="rounded-full h-6 w-6 object-cover border-2 border-violet-800"
+                  className="rounded-full h-6 w-6 object-cover"
+                  draggable={false}
                 />
 
                 <span

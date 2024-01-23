@@ -31,7 +31,10 @@ export default function Posts({
         </div>
       )}
       {dataLoading ? (
+        <div className="flex flex-col gap-8 w-full items-center justify-center">
         <Skeleton type="quotes" />
+        <Skeleton type="quotes" />
+        </div>
       ) : (
         <>
           {posts?.length > 0 ? (

@@ -7,7 +7,7 @@ export const metadata = {
 export default function page() {
 
   return (
-    <div className="bg-black h-full w-screen flex items-center justify-center py-10 select-none px-4">
+    <div className="dark:bg-black bg-white h-full w-screen flex items-center justify-center select-none px-4 py-10 sm:py-0">
      <SignIn /> 
     </div>
   );

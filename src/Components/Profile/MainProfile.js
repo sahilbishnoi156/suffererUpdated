@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Posts from "@/Components/PostItems/Posts";
 import { useUserStore, useLoadingStore } from "@/stateManagment/zustand";
+import FollowersM from "../Modals/FollowersM";
 
 export default function MainProfile({
   routeUser,
@@ -18,10 +19,30 @@ export default function MainProfile({
   const [imageClick, setImageClick] = useState(false);
   const [followClicked, setFollowClicked] = useState(false);
   const [postType, setPostType] = useState("userPosts");
-
+  const [isGetUserClicked, setIsGetUserClicked] = useState(false)
+  
   //* store States
-  const { currentUserData } = useUserStore();
-  const { loading, progress } = useLoadingStore();
+  const { currentUserData, setFollowersAndFollowings, followersAndFollowings  } = useUserStore();
+  const { loading, setProgress } = useLoadingStore();
+  const [followersLoading, setFollowersLoading ] =useState(false);
+
+  //* followers and followings
+  const getUsers = async () => {
+    setFollowersLoading(true)
+    setProgress(50)
+    try {
+        const response = await fetch(`/api/user/get/followersAndFollowings/${routeUser?._id}`)
+        const data = await response.json();
+        setFollowersAndFollowings(data)
+    } catch (error) {
+        console.log(error)
+    } finally{
+    setProgress(100)
+  setFollowersLoading(false)
+    
+    }
+  }
+
 
   // Ref
   const profileNavRef = useRef();
@@ -51,7 +72,7 @@ export default function MainProfile({
         user: data.followedUser,
         posts: routeUserPosts,
       });
-
+      getUsers()
       if (data.status !== 200) {
         throw new Error(data.message || "Something went wrong");
       }
@@ -65,6 +86,10 @@ export default function MainProfile({
 
   // Use Effect
   useEffect(() => {
+
+    if(followersAndFollowings.length === 0 && Object.keys(routeUserData).length !== 0 && isGetUserClicked){
+      getUsers();
+    }
     // Switching Navigation bar animation
     const handleClick = (e) => {
       const button = e.target.closest("div");
@@ -80,11 +105,12 @@ export default function MainProfile({
     };
     profileNavRef.current.addEventListener("click", handleClick);
     // Cleanup function to remove the event listener
-  }, []);
+  }, [routeUserData, isGetUserClicked]);
 
   return (
     <>
       <div className="sm:w-5/6 lg:w-5/6 xl:5/6 w-full h-full text-white flex flex-col justify-center items-center gap-2 px-4 ">
+        
         <div
           className={`sm:hidden fixed bottom-0 left-0 w-screen h-fit px-4 mb-12 ${
             toggleBtmNav ? "-z-50" : "z-30"
@@ -218,18 +244,8 @@ export default function MainProfile({
               </div>
               <div className="flex sm:gap-8 gap-2 text-center text-xs">
                 <div>{routeUserPosts?.length} Posts</div>
-                <Link
-                  href={`/${routeUser?._id}/followers`}
-                  className="cursor-pointer"
-                >
-                  {routeUser?.followers?.length} Followers
-                </Link>
-                <Link
-                  href={`/${routeUser?._id}/followings`}
-                  className="cursor-pointer"
-                >
-                  {routeUser?.followings?.length} Followings
-                </Link>
+                <FollowersM text={`${routeUser?.followers?.length || 0} Followers`} users={followersAndFollowings?.followers} type={"Followers"} setIsGetUserClicked={setIsGetUserClicked} followersLoading={followersLoading}/>
+            <FollowersM text={`${routeUser?.followings?.length || 0} Followings`} users={followersAndFollowings?.followings} type={"Followings"} setIsGetUserClicked={setIsGetUserClicked} followersLoading={followersLoading}/>
               </div>
             </div>
           </div>
@@ -251,19 +267,9 @@ export default function MainProfile({
               </div>
             </div>
             <div className="hidden gap-8 sm:flex">
-              <div>{routeUserPosts?.length} Posts</div>
-              <Link
-                href={`/${routeUser?._id}/followers`}
-                className="cursor-pointer"
-              >
-                {routeUser?.followers?.length} Followers
-              </Link>
-              <Link
-                href={`/${routeUser?._id}/followings`}
-                className="cursor-pointer"
-              >
-                {routeUser?.followings?.length} Followings
-              </Link>
+            <div>{routeUserPosts?.length || 0} Posts</div>
+            <FollowersM text={`${routeUser?.followers?.length || 0} Followers`} users={followersAndFollowings?.followers} type={"Followers"} setIsGetUserClicked={setIsGetUserClicked} followersLoading={followersLoading}/>
+            <FollowersM text={`${routeUser?.followings?.length || 0} Followings`} users={followersAndFollowings?.followings} type={"Followings"} setIsGetUserClicked={setIsGetUserClicked} followersLoading={followersLoading}/>
             </div>
             <div>
               <strong>
@@ -284,7 +290,7 @@ export default function MainProfile({
                 </Link>
               ) : Object.keys(currentUserData).length !== 0 ? (
                 <div className="my-4 flex gap-4">
-                  {!followClicked && progress === 0 ? (
+                  {!followClicked? (
                     <button
                       type="button"
                       className={`${

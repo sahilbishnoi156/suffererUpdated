@@ -10,7 +10,6 @@ import { useUserStore } from "@/stateManagment/zustand";
 export default function page() {
   const { suggestedUsers, setSuggestedUsers } = useUserStore();
   const [dataLoading, setDataLoading] = useState(false);
-  const router = useRouter();
   const [progress, setProgress] = useState(0);
   const [searchProg, setSearchProg] = useState(false);
   const [suggestUsers, setSuggestUsers] = useState([]);

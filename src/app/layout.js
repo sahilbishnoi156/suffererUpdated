@@ -5,6 +5,8 @@ import BottomNav from "@/Components/BottomNav";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer } from "react-toastify";
 import Script from "next/script";
+import { Providers } from "./providers";
+
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,7 +23,8 @@ export default function RootLayout({ children }) {
         <meta name="referrer" content="no-referrer" />
       </head>
       <body className={`${inter.className}`}>
-        <div className="flex w-full">
+      <Providers>
+        <div className="flex w-full dark:bg-black bg-white">
           <div className="h-screen w-36 sm:block hidden">
             <Navbar />
           </div>
@@ -47,7 +50,8 @@ export default function RootLayout({ children }) {
           crossOrigin="anonymous"
           rel="preload"
           as="script"
-        />
+          />
+          </Providers>
       </body>
     </html>
   );

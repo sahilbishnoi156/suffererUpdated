@@ -50,8 +50,9 @@ export default function SideProfile({ currentUser }) {
               "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI="
             }
             alt="Loading..."
-            height={64}
-            width={64}
+            height={1000}
+            width={1000}
+            quality={100}
             className="h-16 w-16 rounded-full object-cover"
           />
           <span>

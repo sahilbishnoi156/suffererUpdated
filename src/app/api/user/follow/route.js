@@ -30,11 +30,11 @@ export const PATCH = async (request) => {
 
     const followedAt = new Date();
     // Check if the follower is already following the followed user
-    if (followedUser.followers.includes(followerUser?._id)) {
+    if (followedUser.followers.some((user)=> user._id.toString() === followerUser?._id.toString())) {
       // Unfollow: Remove followerUser from followedUser's followers list
-      followedUser.followers = followedUser.followers.filter(id => id.toString() !== followerUser?._id.toString());
+      followedUser.followers = followedUser.followers.filter(user => user._id.toString() !== followerUser?._id.toString());
       // Remove followedUser from followerUser's following list
-      followerUser.followings = followerUser.followings.filter(id => id.toString() !== followedUser._id.toString());
+      followerUser.followings = followerUser.followings.filter(user => user._id.toString() !== followedUser._id.toString());
     } else {
       // Follow: Add followerId to followedUser's followers list
 

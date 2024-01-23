@@ -9,8 +9,9 @@ export const useUserStore = create((set) => ({
   setSuggestedUsers: (suggestedUsers) => set({ suggestedUsers }),
   mainPagePosts:[],
   setMainPagePosts: (mainPagePosts) => set({ mainPagePosts }),
+  followersAndFollowings:[],
+  setFollowersAndFollowings: (followersAndFollowings) => set({ followersAndFollowings }),
 }));
-
 
 export const useLoadingStore = create((set) => ({
   progress: 0,
@@ -18,4 +19,8 @@ export const useLoadingStore = create((set) => ({
 
   loading: false,
   setLoading: (newLoading) => set({ loading: newLoading }), 
+  
+  isCommentDeleting: false,
+  setIsCommentDeleting: (newLoading) => set({ isCommentDeleting: newLoading }), 
+
 }));

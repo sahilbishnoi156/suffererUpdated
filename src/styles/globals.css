@@ -1,39 +1,40 @@
-@import url('https://fonts.googleapis.com/css2?family=Hind&family=REM:wght@500&family=Tulpen+One&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Hind&family=REM:wght@500&family=Tulpen+One&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body {
-  font-family: 'REM';
-  background-color: black;
+  font-family: "REM";
 }
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-*::-webkit-scrollbar{
+*::-webkit-scrollbar {
   display: none;
 }
-nav{
+nav {
   box-sizing: border-box !important;
 }
-#navigation-icons a i, #navigation-icons a img{
-  transition: .2s;
+#navigation-icons a i,
+#navigation-icons a img {
+  transition: 0.2s;
 }
 
-#navigation-icons a:hover i, #navigation-icons a:hover img{
+#navigation-icons a:hover i,
+#navigation-icons a:hover img {
   color: lightblue;
   scale: 1.15;
 }
 
 /* Loading */
 #post-item::-webkit-scrollbar,
-#post-area::-webkit-scrollbar{
+#post-area::-webkit-scrollbar {
   display: none;
 }
-#post-area{
+#post-area {
   font-size: 1.2rem;
 }
 #site-heading {
@@ -74,4 +75,19 @@ nav{
   -webkit-text-fill-color: transparent;
   background-size: 500% auto;
   animation: textShine 5s ease-in-out infinite alternate;
+}
+
+.notficationPop {
+  animation: pop-in .1s linear;
+  transform-origin: center;
+}
+@keyframes pop-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }

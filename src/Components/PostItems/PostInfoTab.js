@@ -41,7 +41,7 @@ export default function PostInfoTab({
     <div className="fixed top-0 right-0 h-screen w-screen backdrop-blur-lg rounded-3xl z-50">
       <div
         id="post-info"
-        className="w-4/5 xl:w-1/4 scale-125 opacity-0 h-fit absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 bg-slate-700 px-4 rounded-2xl"
+        className="w-4/5 xl:w-1/4 scale-125 opacity-0 h-fit absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 bg-[#151515] px-4 rounded-2xl"
       >
         <ul className="py-2 text-sm text-gray-700 dark:text-gray-200 w-full h-full flex items-center justify-center gap-2 flex-col">
           {Object.keys(currentUserData)?.length !== 0 && (

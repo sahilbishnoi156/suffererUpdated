@@ -19,6 +19,7 @@ export default function SignUp() {
   const router = useRouter();
   // Refs
   const timerRef = useRef();
+  
 
   const handleSignUp = async (e) => {
     e.preventDefault();
@@ -150,13 +151,13 @@ export default function SignUp() {
     getLocation();
   }, []);
   return (
-    <div className="flex w-full h-full bg-black text-white items-center justify-start sm:p-16 select-none">
+    <div className="flex w-full h-full dark:bg-black bg-white text-white items-center justify-start sm:p-16 select-none">
       <div className="h-full w-full flex flex-col items-center justify-center gap-8">
         <div>
           <span className="text-5xl" id="signUp-heading">
             Sign Up
           </span>
-          <i className="fa-solid fa-hippo ml-4 text-white text-5xl"></i>
+          <i className="fa-solid fa-hippo ml-4 dark:text-white text-gray-700 text-5xl"></i>
         </div>
         <form className="sm:w-2/3 w-11/12 " onSubmit={handleSignUp}>
           <div className="grid gap-6 mb-6 md:grid-cols-2">
