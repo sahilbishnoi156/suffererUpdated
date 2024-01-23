@@ -60,7 +60,7 @@ export default function create() {
 
   return (
     <div className="w-full h-full flex items-center justify-center flex-col py-8 mb-8 p-4">
-      <h1 className="text-4xl sm:text-2xl font-bold text-center w-full sm:w-3/4 text-white mb-6">
+      <h1 className="text-4xl sm:text-2xl font-bold text-center w-full sm:w-3/4 dark:text-white text-black mb-6">
         Create Post
       </h1>
       <UploadPost

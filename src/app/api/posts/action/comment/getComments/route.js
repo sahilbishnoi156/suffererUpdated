@@ -18,7 +18,7 @@ export const POST = async (request) => {
     }
     const comments = FoundPost.comments
 
-    const findComments = await Comment.find({ _id: { $in: comments } })
+    const findComments = await Comment.find({ _id: { $in: comments } }).populate("creator")
     const sortCreatedAt = findComments.sort((a,b)=>b.createdAt-a.createdAt)
     const sortFlagged = sortCreatedAt.sort((a,b)=>b.flagged - a.flagged)
     return new Response(JSON.stringify(sortFlagged), { status: 200});

@@ -35,7 +35,7 @@ export default function page() {
     }
   }, []);
   return (
-    <div className="h-screen w-full sm:w-2/3 p-4 sm:p-8 flex flex-col sm:gap-12 gap-10 text-white sm:ml-28">
+    <div className="h-screen w-full sm:w-2/3 p-4 sm:p-8 flex flex-col sm:gap-12 gap-10 text-black dark:text-white sm:ml-28">
       <LoadingBar
         color="#f11946"
         progress={progress}
@@ -62,13 +62,8 @@ export default function page() {
                     {suggestUsers.map((user) => {
                       return (
                         <UserIds
-                          heading="People You May Know"
+                          user={user}
                           key={user._id}
-                          username={user.username}
-                          user_image={user.image}
-                          userId={user._id}
-                          given_name={user.given_name}
-                          family_name={user.family_name}
                         />
                       );
                     })}
@@ -78,13 +73,8 @@ export default function page() {
                     {suggestedUsers.slice(0, 5).map((user) => {
                       return (
                         <UserIds
-                          heading="People You May Know"
                           key={user._id}
-                          username={user.username}
-                          user_image={user.image}
-                          userId={user._id}
-                          given_name={user.given_name}
-                          family_name={user.family_name}
+                          user={user}
                         />
                       );
                     })}

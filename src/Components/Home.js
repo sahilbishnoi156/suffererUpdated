@@ -98,7 +98,7 @@ export default function Home() {
   }, []);
   return (
     <>
-      <div className="text-white box-border flex justify-end bg-black ">
+      <div className="dark:text-white text-black box-border flex justify-end dark:bg-black bg-white ">
         <LoadingBar
           color="#f11946"
           progress={progress}

@@ -6,6 +6,6 @@ export const metadata = {
 }
 export default function register() {
   return (
-    <div className='dark:bg-black bg-white h-full w-screen sticky z-50 top-0 left-0 flex items-center justify-center sm:py-0 py-8'><SignUp/></div>
+    <div className='dark:bg-black bg-white h-full w-screen flex items-center justify-center sm:py-0 py-8'><SignUp/></div>
   )
 }

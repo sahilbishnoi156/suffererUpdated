@@ -38,12 +38,12 @@ export default function PostInfoTab({
   }, []);
 
   return (
-    <div className="fixed top-0 right-0 h-screen w-screen backdrop-blur-lg rounded-3xl z-50">
+    <div className="fixed top-0 right-0 h-screen w-screen backdrop-blur-sm rounded-3xl z-50">
       <div
         id="post-info"
-        className="w-4/5 xl:w-1/4 scale-125 opacity-0 h-fit absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 bg-[#151515] px-4 rounded-2xl"
+        className="w-4/5 xl:w-1/4 scale-125 opacity-0 h-fit absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 dark:bg-[#151515] px-4 rounded-2xl bg-white dark:text-white text-black"
       >
-        <ul className="py-2 text-sm text-gray-700 dark:text-gray-200 w-full h-full flex items-center justify-center gap-2 flex-col">
+        <ul className="py-2 text-sm w-full h-full flex items-center justify-center gap-2 flex-col">
           {Object.keys(currentUserData)?.length !== 0 && (
             <>
               <li
@@ -57,7 +57,7 @@ export default function PostInfoTab({
                 ></i>
                 {postInfo?.save?.isSaved ? "Saved" : "Save"}
               </li>
-              <li className="w-full h-[1px] bg-slate-400"></li>
+              <li className="w-full h-[.1px] bg-slate-400"></li>
             </>
           )}
           {post?.creator?._id === currentUserData?.user?._id ? (
@@ -69,7 +69,7 @@ export default function PostInfoTab({
                 <i className="fa-solid fa-pen-to-square cursor-pointer mr-2"></i>
                 Edit Post
               </li>
-              <li className="w-full h-[1px] bg-slate-400"></li>
+              <li className="w-full h-[.1px] bg-slate-400"></li>
               <li
                 className="px-4 py-2 hover:rotate-2 text-red-400 cursor-pointer transition-all"
                 onClick={handleDelete}
@@ -77,7 +77,7 @@ export default function PostInfoTab({
                 <i className="fa-solid fa-trash cursor-pointer mr-2"></i>
                 Delete Post
               </li>
-              <li className="w-full h-[1px] bg-slate-400"></li>
+              <li className="w-full h-[.1px] bg-slate-400"></li>
             </>
           ) : (
             <></>
@@ -105,7 +105,7 @@ export default function PostInfoTab({
               </>
             )}
           </li>
-          <li className="w-full h-[1px] bg-slate-400"></li>
+          <li className="w-full h-[.1px] bg-slate-400"></li>
           <li
             className="px-4 py-2 hover:rotate-2 cursor-pointer transition-all"
             onClick={handleCopyLink}
@@ -122,7 +122,7 @@ export default function PostInfoTab({
               </>
             )}
           </li>
-          <li className="w-full h-[1px] bg-slate-400"></li>
+          <li className="w-full h-[.1px] bg-slate-400"></li>
           <li className="px-4 py-2 hover:rotate-2 cursor-pointer transition-all">
             <button
               onClick={() => {
@@ -134,7 +134,7 @@ export default function PostInfoTab({
               <i className="fa-regular fa-eye-slash mr-2"></i>Go to post
             </button>
           </li>
-          <li className="w-full h-[1px] bg-slate-400"></li>
+          <li className="w-full h-[.1px] bg-slate-400"></li>
           <li
             className="hover:rotate-2 cursor-pointer transition-all px-4 py-2"
             onClick={() => {

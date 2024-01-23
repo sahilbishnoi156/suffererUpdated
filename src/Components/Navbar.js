@@ -50,9 +50,9 @@ export default function Navbar() {
   }, [navToggle]);
   return (
     <nav
-      className={`h-12 sm:h-screen flex items-center justify-between flex-col bg-black ${
+      className={`h-12 sm:h-screen flex items-center justify-between flex-col dark:bg-black bg-white ${
         navToggle ? "w-60" : "w-16"
-      } text-white px-5 py-8 border-r-2 border-gray-700 fixed transition-all duration-500 ${
+      } dark:text-white text-black px-5 py-8 border-r-1 border-gray-700 fixed transition-all duration-500 ${
         pathname === "/signIn" || pathname === "/signUp" ? "hidden" : "block"
       }`}
     >
@@ -75,7 +75,7 @@ export default function Navbar() {
         </Link>
       </div>
       <div
-        className={`flex justify-center items-start flex-col bg-black text-white w-full gap- transition-all`}
+        className={`flex justify-center items-start flex-col w-full gap- transition-all`}
       >
         <div
           className="flex justify-center items-start flex-col xl:gap-12 md:gap-10 sm:gap-8 gap-6 "

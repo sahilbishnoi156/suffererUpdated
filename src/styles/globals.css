@@ -50,16 +50,10 @@ nav {
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  animation: textShine 5s ease-in-out infinite alternate;
   background-size: 500% auto;
 }
-@keyframes textShine {
-  0% {
-    background-position: 0% 50%;
-  }
-  100% {
-    background-position: 100% 50%;
-  }
-}
+
 
 #signUp-heading {
   font-weight: 900;
@@ -89,5 +83,14 @@ nav {
   100% {
     opacity: 1;
     transform: scale(1);
+  }
+}
+
+@keyframes textShine {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
   }
 }

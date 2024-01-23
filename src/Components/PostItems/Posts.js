@@ -16,7 +16,7 @@ export default function Posts({
       className={`${
         section === "Trending"
           ? "flex justify-center items-center flex-col gap-6 p-2 py-8 pb-16 sm:p-8"
-          : "flex items-center justify-center flex-col gap-6 mt-10"
+          : "flex items-center justify-center flex-col gap-6 mt-2"
       }`}
     >
       {section === "Trending" && (
@@ -31,7 +31,7 @@ export default function Posts({
         </div>
       )}
       {dataLoading ? (
-        <div className="flex flex-col gap-8 w-full items-center justify-center">
+        <div className="flex flex-col gap-8 sm:w-3/5 w-full items-center justify-center">
         <Skeleton type="quotes" />
         <Skeleton type="quotes" />
         </div>
@@ -48,7 +48,7 @@ export default function Posts({
               );
             })
           ) : (
-            <div className="text-white">
+            <div className="dark:text-white text-black">
               {section === "Trending" ? (
                 "Nothing Here..."
               ) : (

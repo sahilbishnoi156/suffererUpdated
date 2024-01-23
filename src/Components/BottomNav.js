@@ -35,7 +35,7 @@ export default function BottomNav() {
         <Link
           replace
           prefetch
-          href="/createpost"
+          href="/post/createpost"
           className="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-950"
         >
           <i className="fa-solid fa-plus text-2xl  "></i>

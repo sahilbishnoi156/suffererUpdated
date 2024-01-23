@@ -8,11 +8,13 @@ import {
   Input,
   ScrollShadow,
   Avatar,
+  Tooltip,
 } from "@nextui-org/react";
 import { useLoadingStore, useUserStore } from "@/stateManagment/zustand";
 import Skeleton from "../Skeleton";
 import CommentInfoM from "./CommentInfoM";
 import { toast } from "react-toastify";
+import { UserM } from "./UserM";
 
 export default function CommentM({
   post,
@@ -29,17 +31,17 @@ export default function CommentM({
   buttonData,
 }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [ smallWindow, setSmallWindow ] = React.useState(false)
-  const inputRef = React.useRef(null)
+  const [smallWindow, setSmallWindow] = React.useState(false);
+  const inputRef = React.useRef(null);
 
   React.useEffect(() => {
-    if(inputRef.current){
+    if (inputRef.current) {
       inputRef.current.focus();
     }
     if (window.innerWidth < 700) {
-      setSmallWindow(true)
+      setSmallWindow(true);
     }
-  },[window.innerWidth])
+  }, [window.innerWidth]);
 
   return (
     <div className="flex flex-col gap-2 ">
@@ -78,7 +80,7 @@ export default function CommentM({
                         src={post?.creator?.image}
                       />
                       <div className="flex flex-col items-start justify-center">
-                        <h4 className="text-small font-semibold leading-none text-white">
+                        <h4 className="text-small font-semibold leading-none dark:text-white text-black">
                           {post?.creator?.username}
                         </h4>
                         <h5 className="text-small tracking-tight text-default-500">
@@ -87,8 +89,7 @@ export default function CommentM({
                       </div>
                     </div>
                   </div>
-                  <ScrollShadow className="w-full flex items-start flex-col gap-8 p-4">
-                    {}
+                  <ScrollShadow size={100} className="w-full flex items-start flex-col gap-8 p-4">
                     {commentsLoading
                       ? Array.from(
                           {
@@ -183,7 +184,6 @@ export const CommentComponent = ({ item, getComments }) => {
     },
   });
 
-
   const handleLikeComment = () => {
     setCommentInfo((prevCommentInfo) => ({
       ...prevCommentInfo,
@@ -224,7 +224,7 @@ export const CommentComponent = ({ item, getComments }) => {
   }, 2000);
 
   const handleDelete = async () => {
-    toast.warn('Deleting...', {
+    toast.warn("Deleting...", {
       position: "top-center",
       autoClose: 1000,
       hideProgressBar: false,
@@ -233,30 +233,30 @@ export const CommentComponent = ({ item, getComments }) => {
       draggable: true,
       progress: undefined,
       theme: "light",
-      });
+    });
     try {
-        const response = await fetch("/api/posts/action/comment/delete", {
-          method: "DELETE",
-          body: JSON.stringify({
-            commentId: item?._id,
-          }),
-        });
+      const response = await fetch("/api/posts/action/comment/delete", {
+        method: "DELETE",
+        body: JSON.stringify({
+          commentId: item?._id,
+        }),
+      });
 
-        if (response.status === 200) {
-          toast.success('Deleted', {
-            position: "top-center",
-            autoClose: 1000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            });
-            getComments();
-        }
+      if (response.status === 200) {
+        toast.success("Deleted", {
+          position: "top-center",
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+        getComments();
+      }
     } catch (error) {
-      toast.error('Something Went Wrong', {
+      toast.error("Something Went Wrong", {
         position: "top-right",
         autoClose: 5000,
         hideProgressBar: false,
@@ -265,30 +265,30 @@ export const CommentComponent = ({ item, getComments }) => {
         draggable: true,
         progress: undefined,
         theme: "light",
-        });
+      });
       console.log(error);
-    } 
+    }
   };
 
   return (
     <div className="flex items-start justify-between bg-white dark:bg-[#151515]  w-full group">
       <div className="flex items-start justify-start gap-2">
         <img
-          className="rounded-full object-cover h-8 w-8"
+          className="rounded-full object-cover h-8 w-8 "
           src={item?.creator?.image}
-          alt=""
+          alt="notFound"
         />
         <div className="flex items-start justify-start flex-col">
-          <div className="text-sm dark:text-white text-black w-full ">
-            <span className="text-base">@{item?.creator?.username}</span>
-            <span className="ml-4 dark:text-gray-300 text-neutral-600 pr-2">
-              {item?.content}
-            </span>
-          </div>
+            <div className="text-sm dark:text-white text-black w-full ">
+              <span className="text-base  font-medium">@{item?.creator?.username}</span>
+              <span className="ml-4 dark:text-gray-300 text-neutral-600 pr-2">
+                {item?.content}
+              </span>
+            </div>
           <div className="flex items-start justify-center gap-2 text-xs dark:text-gray-400 text-slate-500">
             <span>{difference.humanize()}</span>
             <span>{commentInfo?.likes?.number || 0} likes</span>
-            <span className="ml-4 text-xs ">
+            <span className="ml-4 text-sm">
               <CommentInfoM
                 comment={item}
                 user={currentUserData?.user}

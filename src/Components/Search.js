@@ -46,7 +46,7 @@ export default function Search({
 
   return (
     <form
-      className="w-full flex items-center justify-between p-2 border-2 border-slate-700 rounded-lg"
+      className="w-full flex items-center justify-between p-2 border-2 border-slate-600 rounded-lg"
       onSubmit={handleUserSearch}
     >
       <input
@@ -59,7 +59,7 @@ export default function Search({
       {!isLoading ? (
         <button className="p-2" type="submit">
           <svg
-            className="w-4 h-4 text-gray-400 dark:text-gray-300"
+            className="w-4 h-4 text-gray-600 dark:text-gray-400"
             aria-hidden="true"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -82,7 +82,7 @@ export default function Search({
           <svg
             aria-hidden="true"
             role="status"
-            className="inline w-4 h-4 text-white animate-spin"
+            className="inline w-4 h-4 text-black dark:text-gray-300 animate-spin"
             viewBox="0 0 100 101"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"

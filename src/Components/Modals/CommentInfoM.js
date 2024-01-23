@@ -34,11 +34,11 @@ export default function CommentInfoM({ comment, user, handleDelete }) {
                     >
                       Delete
                     </button>
-                    <div className="w-full h-[1px] bg-slate-700"></div>
+                    <div className="w-full h-[.5px] bg-slate-700"></div>
                   </>
                 )}
                 <button className="text-red-400">Report</button>
-                <div className="w-full h-[1px] bg-slate-700"></div>
+                <div className="w-full h-[.5px] bg-slate-700"></div>
                 <button onClick={() => onClose()}>Close</button>
               </ModalBody>
             </>

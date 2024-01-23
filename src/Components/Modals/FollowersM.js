@@ -72,12 +72,8 @@ export default function FollowersM({ text, users, type, setIsGetUserClicked, fol
                   {users?.map((user) => {
                     return (
                       <UserIds
-                        heading=""
+                        user={user}
                         key={user?.username}
-                        username={user?.username}
-                        user_image={user?.image}
-                        given_name={user?.given_name}
-                        family_name={user?.family_name}
                       />
                     );
                   })}

@@ -6,6 +6,8 @@ import { usePathname, useRouter } from "next/navigation";
 import Posts from "@/Components/PostItems/Posts";
 import { useUserStore, useLoadingStore } from "@/stateManagment/zustand";
 import FollowersM from "../Modals/FollowersM";
+import ProfileNavM from "../Modals/ProfileNavM";
+import { Badge, Button, Chip } from "@nextui-org/react";
 
 export default function MainProfile({
   routeUser,
@@ -19,30 +21,31 @@ export default function MainProfile({
   const [imageClick, setImageClick] = useState(false);
   const [followClicked, setFollowClicked] = useState(false);
   const [postType, setPostType] = useState("userPosts");
-  const [isGetUserClicked, setIsGetUserClicked] = useState(false)
-  
+  const [isGetUserClicked, setIsGetUserClicked] = useState(false);
+
   //* store States
-  const { currentUserData, setFollowersAndFollowings, followersAndFollowings  } = useUserStore();
+  const { currentUserData, setFollowersAndFollowings, followersAndFollowings } =
+    useUserStore();
   const { loading, setProgress } = useLoadingStore();
-  const [followersLoading, setFollowersLoading ] =useState(false);
+  const [followersLoading, setFollowersLoading] = useState(false);
 
   //* followers and followings
   const getUsers = async () => {
-    setFollowersLoading(true)
-    setProgress(50)
+    setFollowersLoading(true);
+    setProgress(50);
     try {
-        const response = await fetch(`/api/user/get/followersAndFollowings/${routeUser?._id}`)
-        const data = await response.json();
-        setFollowersAndFollowings(data)
+      const response = await fetch(
+        `/api/user/get/followersAndFollowings/${routeUser?._id}`
+      );
+      const data = await response.json();
+      setFollowersAndFollowings(data);
     } catch (error) {
-        console.log(error)
-    } finally{
-    setProgress(100)
-  setFollowersLoading(false)
-    
+      console.log(error);
+    } finally {
+      setProgress(100);
+      setFollowersLoading(false);
     }
-  }
-
+  };
 
   // Ref
   const profileNavRef = useRef();
@@ -72,7 +75,7 @@ export default function MainProfile({
         user: data.followedUser,
         posts: routeUserPosts,
       });
-      getUsers()
+      getUsers();
       if (data.status !== 200) {
         throw new Error(data.message || "Something went wrong");
       }
@@ -86,31 +89,19 @@ export default function MainProfile({
 
   // Use Effect
   useEffect(() => {
-
-    if(followersAndFollowings.length === 0 && Object.keys(routeUserData).length !== 0 && isGetUserClicked){
+    if (
+      followersAndFollowings.length === 0 &&
+      Object.keys(routeUserData).length !== 0 &&
+      isGetUserClicked
+    ) {
       getUsers();
     }
-    // Switching Navigation bar animation
-    const handleClick = (e) => {
-      const button = e.target.closest("div");
-      if (!button) return;
-      const calcLeft = button.offsetLeft;
-      if (calcLeft < 164) {
-        profileNavRef.current.style.setProperty("--left", calcLeft + "px");
-      }
-      const calcWidth = button.offsetWidth / profileNavRef.current.offsetWidth;
-      if (calcWidth < 1) {
-        profileNavRef.current.style.setProperty("--width", calcWidth);
-      }
-    };
-    profileNavRef.current.addEventListener("click", handleClick);
     // Cleanup function to remove the event listener
   }, [routeUserData, isGetUserClicked]);
 
   return (
     <>
-      <div className="sm:w-5/6 lg:w-5/6 xl:5/6 w-full h-full text-white flex flex-col justify-center items-center gap-2 px-4 ">
-        
+      <div className="sm:w-5/6 lg:w-5/6 xl:5/6 w-full h-full dark:text-white text-black flex flex-col justify-center items-center px-4 ">
         <div
           className={`sm:hidden fixed bottom-0 left-0 w-screen h-fit px-4 mb-12 ${
             toggleBtmNav ? "-z-50" : "z-30"
@@ -148,37 +139,47 @@ export default function MainProfile({
           </div>
         </div>
         {/* mobile navigation */}
-        <div className="w-full h-14 sm:hidden block">
-          <div className="w-full h-14 fixed backdrop-blur-lg sm:hidden border-b-2 border-gray-800 top-0 left-0 z-50">
-            <div className="flex items-center justify-between w-full px-8 h-full">
+        <div className="w-full h-14 sm:hidden block ">
+          <div className="w-full h-14 fixed dark:bg-black bg-white sm:hidden border-b border-gray-800 top-0 left-0 z-50">
+            <div className="flex items-center justify-between w-full px-2 h-full  text-black dark:text-white ">
               <div>{currentUserData?.user?.username || "error"}</div>
               <div className="flex gap-4 items-center justify-between">
                 <Link
-                  href="/notification"
-                  className="text-xl cursor-pointer text-white select-none"
+                  href="/notifications"
+                  className="text-xl cursor-pointer  select-none"
                   scroll={false}
                   replace
                 >
-                  <i className="text-xl fa-solid fa-bell"></i>
+                  <Badge
+                    content={1}
+                    color="danger"
+                    variant="shadow"
+                    className="border-none"
+                    size="sm"
+                  >
+                    <i className="fa-regular fa-heart"></i>
+                  </Badge>
                 </Link>
-                <Link
-                  className="border-2 rounded-full bg-white h-5 w-5 flex items-center justify-center  "
-                  href="/projectrepo"
-                >
-                  <i className="fa-solid fa-info text-sm text-slate-800 select-none"></i>
+                <Link href="/projectrepo">
+                  <i className="fa-solid fa-circle-info text-lg select-none"></i>
                 </Link>
                 <i
-                  className="fa-solid fa-bars text-white text-lg select-none"
+                  className="fa-solid fa-bars text-lg select-none"
                   onClick={handleToggleBottomInfo}
                 ></i>
               </div>
             </div>
           </div>
         </div>
-        <div className="h-fit border-b-2 border-l-indigo-700 w-full flex flex-col sm:flex-row gap-4 justify-evenly pt-8 sm:pb-10 pb-2 border-gray-700">
+        <div className="sticky top-14 sm:top-0 z-50 dark:bg-black bg-white w-full h-fit flex flex-col pb-4" id="shadow-div">
+        <div className=" border-l-indigo-700 w-full flex flex-col sm:flex-row gap-4 justify-evenly pt-2 md:pt-8 sm:pb-10 pb-2 border-gray-700  ">
           <div className="flex gap-4 items-center justify-center w-fit">
             {/* common image for mobile & desktop */}
-            <div className={`sm:h-40 sm:w-40 h-16 w-16 ${!loading && "border-2"} rounded-full border-gray-500 p-1`}>
+            <div
+              className={`sm:h-40 sm:w-40 h-16 w-16 ${
+                !loading && "border-2"
+              } rounded-full border-violet-500 p-[2px]`}
+            >
               {loading ? (
                 <div className="h-full w-full flex items-center justify-center ">
                   <svg
@@ -200,13 +201,13 @@ export default function MainProfile({
                   </svg>
                 </div>
               ) : (
-                  <img
-                    draggable="false"
-                    src={routeUser?.image}
-                    alt="notfound"
-                    className="h-full w-full rounded-full object-cover cursor-pointer select-none"
-                    onClick={() => setImageClick(true)}
-                  />
+                <img
+                  draggable="false"
+                  src={routeUser?.image}
+                  alt="notfound"
+                  className="h-full w-full rounded-full object-cover cursor-pointer select-none"
+                  onClick={() => setImageClick(true)}
+                />
               )}
             </div>
             {/* view image  */}
@@ -220,7 +221,7 @@ export default function MainProfile({
                     draggable="false"
                     src={routeUser?.image}
                     alt="not found"
-                    className="h-full w-full rounded-full object-cover border-4 p-1 hover:scale-105 transition duration-300 select-none"
+                    className="h-full w-full rounded-full object-cover border-4 border-violet-600 p-[2px] hover:scale-105 transition duration-300 select-none"
                   />
                 </div>
               </div>
@@ -242,10 +243,22 @@ export default function MainProfile({
                   <></>
                 )}
               </div>
-              <div className="flex sm:gap-8 gap-2 text-center text-xs">
+              <div className="flex gap-2 text-center text-xs">
                 <div>{routeUserPosts?.length} Posts</div>
-                <FollowersM text={`${routeUser?.followers?.length || 0} Followers`} users={followersAndFollowings?.followers} type={"Followers"} setIsGetUserClicked={setIsGetUserClicked} followersLoading={followersLoading}/>
-            <FollowersM text={`${routeUser?.followings?.length || 0} Followings`} users={followersAndFollowings?.followings} type={"Followings"} setIsGetUserClicked={setIsGetUserClicked} followersLoading={followersLoading}/>
+                <FollowersM
+                  text={`${routeUser?.followers?.length || 0} Followers`}
+                  users={followersAndFollowings?.followers}
+                  type={"Followers"}
+                  setIsGetUserClicked={setIsGetUserClicked}
+                  followersLoading={followersLoading}
+                />
+                <FollowersM
+                  text={`${routeUser?.followings?.length || 0} Followings`}
+                  users={followersAndFollowings?.followings}
+                  type={"Followings"}
+                  setIsGetUserClicked={setIsGetUserClicked}
+                  followersLoading={followersLoading}
+                />
               </div>
             </div>
           </div>
@@ -267,9 +280,21 @@ export default function MainProfile({
               </div>
             </div>
             <div className="hidden gap-8 sm:flex">
-            <div>{routeUserPosts?.length || 0} Posts</div>
-            <FollowersM text={`${routeUser?.followers?.length || 0} Followers`} users={followersAndFollowings?.followers} type={"Followers"} setIsGetUserClicked={setIsGetUserClicked} followersLoading={followersLoading}/>
-            <FollowersM text={`${routeUser?.followings?.length || 0} Followings`} users={followersAndFollowings?.followings} type={"Followings"} setIsGetUserClicked={setIsGetUserClicked} followersLoading={followersLoading}/>
+              <div>{routeUserPosts?.length || 0} Posts</div>
+              <FollowersM
+                text={`${routeUser?.followers?.length || 0} Followers`}
+                users={followersAndFollowings?.followers}
+                type={"Followers"}
+                setIsGetUserClicked={setIsGetUserClicked}
+                followersLoading={followersLoading}
+              />
+              <FollowersM
+                text={`${routeUser?.followings?.length || 0} Followings`}
+                users={followersAndFollowings?.followings}
+                type={"Followings"}
+                setIsGetUserClicked={setIsGetUserClicked}
+                followersLoading={followersLoading}
+              />
             </div>
             <div>
               <strong>
@@ -279,98 +304,99 @@ export default function MainProfile({
                 {routeUser?.about}
               </p>
               {pathname === "/profile" ? (
-                <Link
-                  href="/setting"
-                  prefetch
-                  replace
-                  type="button"
-                  className="my-4 text-sm p-4 py-1 rounded-lg select-none bg-slate-700 hover:scale-105 cursor-pointer"
-                >
-                  Edit profile
+                <Link href="/setting" prefetch>
+                  <Button
+                    color="primary"
+                    variant="solid"
+                    className="py-0"
+                    size="sm"
+                  >
+                    Edit Profile
+                  </Button>
                 </Link>
-              ) : Object.keys(currentUserData).length !== 0 ? (
-                <div className="my-4 flex gap-4">
-                  {!followClicked? (
-                    <button
-                      type="button"
-                      className={`${
-                        routeUser?.followers?.some((user) => user._id === currentUserData?.user?._id)
-                          ? "bg-slate-700"
-                          : "bg-blue-600 hover:scale-105 cursor-pointer"
-                      } w-24 text-sm p-4 py-1 rounded-lg select-none `}
+              ) : (
+                Object.keys(currentUserData).length !== 0 && (
+                  <div className="my-4 flex gap-4">
+                    <Button
+                      color={`${
+                        routeUser?.followers?.some(
+                          (user) => user._id === currentUserData?.user?._id
+                        )
+                          ? "default"
+                          : "primary"
+                      }`}
+                      variant="solid"
+                      className="py-0"
+                      isLoading={followClicked}
+                      size="sm"
                       onClick={async () => {
                         handleFollowUser();
                       }}
                     >
-                      {routeUser?.followers?.some((user) => user._id === currentUserData?.user?._id)
+                      {routeUser?.followers?.some(
+                        (user) => user._id === currentUserData?.user?._id
+                      )
                         ? "Following"
                         : "Follow"}
-                    </button>
-                  ) : (
-                    <div className="bg-slate-600 cursor-wait select-none w-24 text-sm p-4 py-1 rounded-lg flex items-center justify-center">
-                      <svg
-                        className="w-5 h-5 text-white animate-spin"
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                      >
-                        <circle
-                          className="opacity-25"
-                          cx="12"
-                          cy="12"
-                          r="10"
-                          stroke="currentColor"
-                          strokeWidth="4"
-                        ></circle>
-                        <path
-                          className="opacity-75"
-                          fill="currentColor"
-                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                        ></path>
-                      </svg>
-                    </div>
-                  )}
-                  <div className="p-4 py-1 select-none cursor-pointer rounded-lg bg-slate-700 w-24 hover:scale-105 text-sm flex items-center justify-center">
-                    Message
+                    </Button>
+                    <Button
+                      color="primary"
+                      variant="solid"
+                      className="py-0"
+                      size="sm"
+                    >
+                      Message
+                    </Button>
                   </div>
-                </div>
-              ) : (
-                <></>
+                )
               )}
             </div>
           </div>
         </div>
+        
         {pathname === "/profile" ? (
-          <div
-            id="profile-navigation"
-            className="flex gap-8 w-fit select-none items-center justify-center "
-            ref={profileNavRef}
-          >
-            <div onClick={() => setPostType("userPosts")}>Posts</div>
-            <div
-              onClick={() => {
-                setPostType("savedPosts");
-              }}
-            >
-              Saved
+            <div className="flex gap-8 w-fit select-none items-center justify-center">
+              <ProfileNavM
+                setPostType={setPostType}
+                routeUserData={routeUserData}
+                postType={postType}
+              />
             </div>
-            <div
-              onClick={() => {
-                setPostType("likedPosts");
-              }}
-            >
-              Liked Posts
+          ) : (
+            <div className=" self-center border-b-2 border-[#06b6d4] w-28 pb-1 flex items-center justify-center gap-2 text-[#06b6d4] ">
+              <svg
+                aria-hidden="true"
+                focusable="false"
+                height="20"
+                role="presentation"
+                viewBox="0 0 24 24"
+                width="20"
+                fill="none"
+              >
+                <path
+                  d="M2.58078 19.0112L2.56078 19.0312C2.29078 18.4413 2.12078 17.7713 2.05078 17.0312C2.12078 17.7613 2.31078 18.4212 2.58078 19.0112Z"
+                  fill="currentColor"
+                />
+                <path
+                  d="M9.00109 10.3811C10.3155 10.3811 11.3811 9.31553 11.3811 8.00109C11.3811 6.68666 10.3155 5.62109 9.00109 5.62109C7.68666 5.62109 6.62109 6.68666 6.62109 8.00109C6.62109 9.31553 7.68666 10.3811 9.00109 10.3811Z"
+                  fill="currentColor"
+                />
+                <path
+                  d="M16.19 2H7.81C4.17 2 2 4.17 2 7.81V16.19C2 17.28 2.19 18.23 2.56 19.03C3.42 20.93 5.26 22 7.81 22H16.19C19.83 22 22 19.83 22 16.19V13.9V7.81C22 4.17 19.83 2 16.19 2ZM20.37 12.5C19.59 11.83 18.33 11.83 17.55 12.5L13.39 16.07C12.61 16.74 11.35 16.74 10.57 16.07L10.23 15.79C9.52 15.17 8.39 15.11 7.59 15.65L3.85 18.16C3.63 17.6 3.5 16.95 3.5 16.19V7.81C3.5 4.99 4.99 3.5 7.81 3.5H16.19C19.01 3.5 20.5 4.99 20.5 7.81V12.61L20.37 12.5Z"
+                  fill="currentColor"
+                />
+              </svg>
+              <span className="text-lg">Posts</span>
+              <Chip
+                size="sm"
+                variant="solid"
+                className=" bg-[#06b6d4] text-white h-5 w-5 items-center justify-center flex"
+              >
+                {routeUserPosts?.length || 0}
+              </Chip>
             </div>
-          </div>
-        ) : (
-          <div
-            id="profile-navigation"
-            className="flex gap-8 w-fit select-none items-center justify-center before:w-56"
-            ref={profileNavRef}
-          >
-            <div>Posts</div>
-          </div>
-        )}
+          )}
+        </div>
         <div className="w-full mb-10 ">
           <div className="w-full">
             {postType === "userPosts" ? (

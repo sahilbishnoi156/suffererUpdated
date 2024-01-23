@@ -13,8 +13,8 @@ export const UserM = ({ user }) => {
   const { currentUserData } = useUserStore();
   const [isFollowingLoading, setIsFollowingLoading ] = React.useState(false)
   const [followInfo, setFollowInfo] = React.useState({
-    isFollowed: user.followers.some(
-      (user) => user._id === currentUserData?.user?._id
+    isFollowed: user?.followers?.some(
+      (user) => user?._id === currentUserData?.user?._id
     ),
     number: user?.followers?.length
   });
@@ -54,7 +54,7 @@ export const UserM = ({ user }) => {
   };
 
   return (
-    <Card shadow="none" className="min-w-[300px] border-none bg-transparent">
+    <Card shadow="none" className="min-w-[300px] max-w-[300px] border-none bg-transparent">
       <CardHeader className="justify-between">
         <div className="flex gap-3">
           <Avatar isBordered radius="full" size="md" src={user?.image} />
@@ -85,7 +85,7 @@ export const UserM = ({ user }) => {
         </Button>}
       </CardHeader>
       <CardBody className="px-3 py-0">
-        <p className="text-small pl-px text-default-500">{user?.bio}</p>
+        <p className="text-small pl-px text-default-500">{user?.about.slice(0,50)}</p>
       </CardBody>
       <CardFooter className="gap-3">
         <div className="flex gap-1">

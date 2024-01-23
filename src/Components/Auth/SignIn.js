@@ -94,10 +94,10 @@ export default function SignIn() {
 
   return (
     <div className="flex sm:flex-row flex-col-reverse gap-10 sm:gap-2 w-full h-screen text-white items-center justify-start dark:bg-black bg-white">
-      <div className="sm:w-1/2 w-full flex flex-col items-center sm:justify-center justify-between h-full gap-8 sm:pl-16 pl-0">
+      <div className="sm:w-1/2 hidden w-full md:flex flex-col items-center sm:justify-center justify-between h-full gap-8 sm:pl-16 pl-0">
         <div className="flex-col items-center justify-evenly gap-16 sm:gap-0 sm:flex hidden ">
           <div className="w-full text-center">
-            <span className="text-6xl text-center w-3/4" id="site-heading">
+            <span className="text-6xl text-center w-3/4 text-black" id="site-heading">
               Welcome Back!
             </span>
             <p className="text-gray-400 text-center">
@@ -111,16 +111,16 @@ export default function SignIn() {
           Don't have an account ?
         </Link>
       </div>
-      <div className="text-slate-400 [writing-mode:vertical-lr] relative left-14 sm:block hidden">
+      <div className="text-slate-400 [writing-mode:vertical-lr] relative left-14 md:block hidden">
         ----------------------------------------------
       </div>
-      <div className="h-full sm:w-3/5  w-full flex flex-col items-center justify-center sm:gap-16 gap-4 sm:mt-0">
+      <div className="h-full md:w-3/5  w-full flex flex-col items-center justify-center sm:gap-16 gap-4 sm:mt-0">
         <div className="w-full items-center justify-center flex">
-          <span className="text-6xl pb-4" id="site-heading">
+          <span className="text-6xl pb-4 " id="site-heading" >
             Sign In
           </span>
-          <Link href="/">
-            <i className="fa-solid fa-hippo ml-4 text-gray-600 dark:text-white text-5xl"></i>
+          <Link href="/" className="pb-4">
+            <i className="fa-solid fa-hippo ml-4 text-black dark:text-white text-5xl" id="site-heading"></i>
           </Link>
         </div>
         <form

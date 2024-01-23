@@ -3,16 +3,15 @@ import { useUserStore } from "@/stateManagment/zustand";
 import React, { useEffect, useState, useRef } from "react";
 import { toast } from "react-toastify";
 
-
 export default function UploadPost({
   post,
   handleSubmit,
   setImageUrl,
   setPost,
   submitting,
-  type="Upload",
-  router
-}) {  
+  type = "Upload",
+  router,
+}) {
   // States
   const [currentTime, setCurrentTime] = useState("");
   const { currentUserData, setCurrentUserData } = useUserStore();
@@ -52,7 +51,6 @@ export default function UploadPost({
         theme: "colored",
       });
       router.push("/signIn");
-      
     } catch (error) {
       console.log("Error fetching current user", error);
     }
@@ -85,7 +83,7 @@ export default function UploadPost({
         onSubmit={handleSubmit}
         className="w-full sm:w-3/4 h-full select-none"
       >
-        <div className="text-white w-full sm:w-full h-fit bg-black border border-slate-500 sm:rounded-3xl rounded-xl flex flex-col items-center justify-between">
+        <div className="text-black dark:text-white w-full sm:w-full h-fit dark:bg-black bg-white border border-slate-500 sm:rounded-3xl rounded-xl flex flex-col items-center justify-between">
           <div className="w-full h-fit p-2 sm:p-4">
             <div className="w-full flex items-center justify-between pb-2 sm:pb-4">
               <div className="w-fit flex items-center justify-start gap-4 overflow-hidden cursor-pointer">
@@ -108,18 +106,18 @@ export default function UploadPost({
             </div>
             <div className="w-full h-[1px] bg-slate-500 self-center"></div>
           </div>
-          <div
-            className="w-full px-2 sm:px-4"
-            id="quote-item"
-          >
-            <p className="text-gray-400 text-justify sm:text-lg text-sm">
+          <div className="w-full px-2 sm:px-4" id="quote-item">
+            <p className="dark:text-gray-300 text-gray-700 text-justify sm:text-lg text-sm">
               <textarea
                 name="Caption"
                 value={post.caption}
                 onChange={(e) => setPost({ ...post, caption: e.target.value })}
                 className="w-full bg-transparent outline-none resize-none min-h-[3rem]"
                 placeholder="Caption"
-                onInput={(e) =>{ e.target.style.height = 'auto'; e.target.style.height = e.target.scrollHeight + 'px';}}
+                onInput={(e) => {
+                  e.target.style.height = "auto";
+                  e.target.style.height = e.target.scrollHeight + "px";
+                }}
               />
             </p>
           </div>
@@ -151,14 +149,58 @@ export default function UploadPost({
             <div className="flex items-center justify-start gap-4">
               <div className="flex flex-col items-center justify-center">
                 <i
-                  className={`fa-regular fa-heart cursor-pointer transition duration-300 text-lg sm:text-2xl`}
+                  className={`fa-solid fa-heart text-red-500 cursor-pointer transition duration-300 text-lg sm:text-2xl`}
                 ></i>
               </div>
               <div className="flex flex-col items-center justify-center">
-                <i className="fa-regular fa-comment text-lg sm:text-2xl cursor-pointer"></i>
+                <svg
+                  aria-label="Comment"
+                  className="x1lliihq x1n2onr6 x5n08af cursor-pointer"
+                  fill="currentColor"
+                  height="20"
+                  role="img"
+                  viewBox="0 0 24 24"
+                  width="20"
+                >
+                  <title>Comment</title>
+                  <path
+                    d="M20.656 17.008a9.993 9.993 0 1 0-3.59 3.615L22 22Z"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                  ></path>
+                </svg>
               </div>
               <div className="flex flex-col items-center justify-center">
-                <i className="fa-solid fa-share text-lg sm:text-2xl cursor-pointer"></i>
+                <svg
+                  aria-label="Share Post"
+                  className="x1lliihq x1n2onr6 x5n08af cursor-pointer"
+                  fill="currentColor"
+                  height="20"
+                  role="img"
+                  viewBox="0 0 24 24"
+                  width="20"
+                >
+                  <title>Share Post</title>
+                  <line
+                    fill="none"
+                    stroke="currentColor"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    x1="22"
+                    x2="9.218"
+                    y1="3"
+                    y2="10.083"
+                  ></line>
+                  <polygon
+                    fill="none"
+                    points="11.698 20.334 22 3.001 2 3.001 9.218 10.084 11.698 20.334"
+                    stroke="currentColor"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                  ></polygon>
+                </svg>
               </div>
             </div>
             <div className="flex">

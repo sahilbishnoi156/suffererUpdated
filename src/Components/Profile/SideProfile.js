@@ -5,10 +5,10 @@ import Link from "next/link";
 import Skeleton from "../Skeleton";
 import Image from "next/image";
 import { useUserStore } from "@/stateManagment/zustand";
-
+import { Tooltip } from "@nextui-org/react";
 
 export default function SideProfile({ currentUser }) {
-  const { suggestedUsers, setSuggestedUsers } = useUserStore()
+  const { suggestedUsers, setSuggestedUsers } = useUserStore();
   const [dataLoading, setDataLoading] = useState(false);
 
   const fetchSuggestedUsers = async () => {
@@ -24,45 +24,53 @@ export default function SideProfile({ currentUser }) {
   };
 
   useEffect(() => {
-    if(suggestedUsers.length === 0){
+    if (suggestedUsers.length === 0) {
       if (window.innerWidth > 700) {
         fetchSuggestedUsers();
       }
     }
-  }, []);
+  }, [window.innerWidth]);
 
   return (
     <div className="h-screen flex flex-col justify-start gap-10 px-8 py-12 fixed border-l-2 border-gray-700 select-none">
       {!dataLoading ? (
-        <Link
-          replace
-          href="/profile"
-          data-te-toggle="tooltip"
-          data-te-placement="bottom"
-          data-te-ripple-init
-          data-te-ripple-color="dark"
-          title="Open Profile"
-          className="flex gap-4 items-center cursor-pointer group justify-start
-          w-full" >
-          <Image
-            src={
-              currentUser?.image ||
-              "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI="
-            }
-            alt="Loading..."
-            height={1000}
-            width={1000}
-            quality={100}
-            className="h-16 w-16 rounded-full object-cover"
-          />
-          <span>
-            <p className="text-2xl">@{currentUser?.username || ""}</p>
-            <p className="text-gray-500 dark:text-gray-400">
-              {currentUser?.given_name || currentUser?.username}{" "}
-              {currentUser?.family_name || ""}
-            </p>
-          </span>
-        </Link>
+        <Tooltip placement={"left"}
+        content={"open profile"}
+        showArrow
+        delay={200}
+        size="sm"
+        color="foreground">
+          <Link
+            replace
+            href="/profile"
+            className="flex gap-4 items-center cursor-pointer group justify-start
+          w-full"
+          >
+            <Image
+              src={
+                currentUser?.image ||
+                "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI="
+              }
+              alt="Loading..."
+              height={1000}
+              width={1000}
+              quality={100}
+              className="h-16 w-16 rounded-full object-cover"
+            />
+            <span>
+              <p className="text-2xl flex items-center gap-4">
+                @{currentUser?.username || ""}{" "}
+                {currentUser?.isVerified && (
+                  <img src="/verified.svg" className="h-4 w-4" />
+                )}
+              </p>
+              <p className="text-gray-500 dark:text-gray-400">
+                {currentUser?.given_name || currentUser?.username}{" "}
+                {currentUser?.family_name || ""}
+              </p>
+            </span>
+          </Link>
+        </Tooltip>
       ) : (
         <Skeleton type={"userId"} />
       )}
@@ -73,33 +81,23 @@ export default function SideProfile({ currentUser }) {
         ) : (
           <>
             {suggestedUsers?.slice(0, 5).map((user) => {
-              return (
-                <UserIds
-                  heading="People You May Know"
-                  key={user?._id}
-                  username={user.username}
-                  user_image={user.image}
-                  userId={user._id}
-                  given_name={user.given_name}
-                  family_name={user.family_name}
-                />
-              );
+              return <UserIds key={user?._id} user={user} />;
             })}
           </>
         )}
       </div>
-      <div className="flex items-start justify-center flex-col gap-2">
-        <div className="w-full flex items-end justify-start gap-2">
+      <div className="flex items-start justify-center flex-col gap-1">
+        <div className="w-full flex items-center justify-start gap-2">
           <p className="text-sm">Learn About This Project</p>
           <Link
-            className="border-2 rounded-full bg-white h-6 w-6 flex items-center justify-center  "
+            className="cursor-pointer"
             href="/projectrepo"
             prefetch={true}
           >
-            <i aria-hidden className="fa-solid fa-info text-sm text-slate-800"></i>
+            <i className="fa-solid fa-circle-info"></i>
           </Link>
         </div>
-        <div className="text-xs text-slate-400">
+        <div className="text-xs text-slate-600">
           © 2023 SUFFERER FROM CODENAUTICA
         </div>
       </div>

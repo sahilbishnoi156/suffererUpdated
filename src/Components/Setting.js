@@ -2,6 +2,7 @@
 import { useState, useRef, useEffect } from "react";
 import Loading from "../Components/Loading";
 import { toast } from "react-toastify";
+import { Input } from "@nextui-org/react";
 
 export default function Setting({ handleLogOut, user, id, setProgress }) {
   // States
@@ -253,7 +254,7 @@ export default function Setting({ handleLogOut, user, id, setProgress }) {
     return <Loading />; // Replace this with your loading component or placeholder
   }
   return (
-    <div className="sm:w-3/4 w-full h-full bg-gray-900 text-white rounded-xl flex flex-col">
+    <div className="sm:w-3/4 w-full h-full bg-[#151413] text-white rounded-xl flex flex-col">
       <div className="flex sm:p-10 items-start justify-center sm:gap-16 sm:flex-row flex-col">
         <div className="sm:w-2/6 w-full sm:text-start text-center py-8 flex flex-col">
           <span>Personal Information</span>

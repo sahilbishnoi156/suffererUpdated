@@ -18,13 +18,13 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" className="dark:bg-black bg-white ">
       <head>
         <meta name="referrer" content="no-referrer" />
       </head>
       <body className={`${inter.className}`}>
       <Providers>
-        <div className="flex w-full dark:bg-black bg-white">
+        <div className="flex w-full dark:bg-black bg-white ">
           <div className="h-screen w-36 sm:block hidden">
             <Navbar />
           </div>

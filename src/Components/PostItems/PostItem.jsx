@@ -254,7 +254,7 @@ export default function PostItem({ post, id }) {
   }, [post, currentUserData, isGetCommentsClicked]);
   return (
     <div
-      className={`text-white lg:w-3/4 w-full h-fit bg-black border border-slate-500 sm:rounded-xl rounded-lg flex flex-col items-center justify-between`}
+      className={`dark:text-white text-black sm:w-3/5 w-full h-fit dark:bg-black bg-white border sm:dark:rounded-xl sm:rounded rounded-lg flex flex-col items-center justify-between `}
       id={id}
     >
       {messagePoped && (
@@ -278,7 +278,7 @@ export default function PostItem({ post, id }) {
           setTogglePostInfo={setTogglePostInfo}
         />
       )}
-      <div className="w-full h-fit p-2 px-2">
+      <div className="w-full h-fit pt-2 px-2">
         {/* User Profile  */}
         <div className="w-full flex items-center justify-between pb-2">
           <ShowUserM
@@ -287,46 +287,54 @@ export default function PostItem({ post, id }) {
             handleUserIdClick={handleUserIdClick}
             postTime={postTime}
           />
-          <div className="flex gap-6 items-center justify-center">
+          <Tooltip
+            placement={"top"}
+            content={"More options"}
+            showArrow
+            size="sm"
+            color="foreground"
+          >
             <div
               className="w-8 h-8 flex items-center justify-center cursor-pointer"
               onClick={() => setTogglePostInfo(!togglePostInfo)}
             >
               <i className="fa-solid fa-ellipsis-vertical fa-rotate-90 mr-2 cursor-pointer select-none"></i>
             </div>
-          </div>
+          </Tooltip>
         </div>
 
-        <div className="w-full h-[1px] bg-slate-500 self-center"></div>
+        <div className="w-full h-[1px] bg-slate-500 self-center dark:block hidden"></div>
       </div>
       {/* Post Body  */}
-      <div className="w-full h-fit overflow-hidden px-2 sm:px-4" id="post-item">
-        <p className="text-gray-200 text-start sm:text-lg whitespace-pre-line text-sm h-fit">
-          {post?.caption}
-        </p>
-      </div>
-      {post?.image && (
-        <div className="w-full h-full mt-2 overflow-hidden">
-          <div className=" h-full w-full p-2">
+      <div className="rounded-sm dark:p-2 p-1 w-full">
+        {post?.image && (
+          <div className=" h-full w-full">
             <Image
               src={post?.image}
               alt="notFound"
               height={1980}
               width={1080}
-              className="w-full max-h-96 h-full object-contain select-none rounded-base"
+              className="w-full max-h-96 h-full object-contain select-none rounded-sm"
               draggable={false}
             />
           </div>
+        )}
+        <div className="w-full h-fit overflow-hidden " id="post-item">
+          <p className="dark:text-gray-200 text-slate-700 text-start sm:text-base whitespace-pre-line text-sm h-fit">
+            {post?.caption}
+          </p>
         </div>
-      )}
-      <div className="w-full px-4">
-        <div className="flex items-center justify-start gap-4 w-full pt-2">
+      </div>
+      <div className="w-full px-2">
+        <div className="flex items-center justify-start gap-4 w-full">
           {Object.keys(currentUserData).length !== 0 && (
             <div className="flex flex-col items-center justify-center">
               <i
-                className={`fa-${
-                  postInfo?.like?.isLiked ? "solid" : "regular"
-                } fa-heart cursor-pointer transition duration-300 text-lg sm:text-xl`}
+                className={`${
+                  postInfo?.like?.isLiked
+                    ? "fa-solid text-red-500 "
+                    : "fa-regular"
+                } fa-heart cursor-pointer transition duration-300 text-lg sm:text-xl `}
                 onClick={handlePostLike}
               ></i>
             </div>
@@ -334,7 +342,24 @@ export default function PostItem({ post, id }) {
           <div className="flex flex-col items-center justify-center">
             <CommentM
               buttonData={
-                <i className="fa-regular fa-comment text-lg sm:text-xl cursor-pointer"></i>
+                <svg
+                  aria-label="Comment"
+                  className="x1lliihq x1n2onr6 x5n08af cursor-pointer"
+                  fill="currentColor"
+                  height="20"
+                  role="img"
+                  viewBox="0 0 24 24"
+                  width="20"
+                >
+                  <title>Comment</title>
+                  <path
+                    d="M20.656 17.008a9.993 9.993 0 1 0-3.59 3.615L22 22Z"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                  ></path>
+                </svg>
               }
               post={post}
               postTime={postTime}
@@ -351,16 +376,43 @@ export default function PostItem({ post, id }) {
             />
           </div>
           <div className="flex flex-col items-center justify-center">
-            <i className="fa-solid fa-share text-lg sm:text-xl cursor-pointer"></i>
+            <svg
+              aria-label="Share Post"
+              className="x1lliihq x1n2onr6 x5n08af cursor-pointer"
+              fill="currentColor"
+              height="20"
+              role="img"
+              viewBox="0 0 24 24"
+              width="20"
+            >
+              <title>Share Post</title>
+              <line
+                fill="none"
+                stroke="currentColor"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                x1="22"
+                x2="9.218"
+                y1="3"
+                y2="10.083"
+              ></line>
+              <polygon
+                fill="none"
+                points="11.698 20.334 22 3.001 2 3.001 9.218 10.084 11.698 20.334"
+                stroke="currentColor"
+                strokeLinejoin="round"
+                strokeWidth="2"
+              ></polygon>
+            </svg>
           </div>
         </div>
-        <div className="text-sm pt-2 flex items-center justify-between">
+        <div className="text-sm flex items-center justify-between">
           <div className="">{postInfo?.like?.number} likes</div>
           <Tooltip
-            placement={"right"}
+            placement={"top"}
             content={"shares"}
             showArrow
-            className="bg-[#151515] text-white"
+            color="primary"
           >
             <div className="flex items-center justify-center gap-1 text-xs">
               <i className="fa-solid fa-share"></i>
