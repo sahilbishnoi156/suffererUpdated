@@ -41,7 +41,7 @@ export default function Posts({
             posts?.map((post) => {
               return (
                 <PostItem
-                  key={`${post.title}${post.image}${post.date || post.createdAt}`}
+                  key={`${post.image}${post.createdAt}`}
                   id={post._id}
                   post={post}
                 />

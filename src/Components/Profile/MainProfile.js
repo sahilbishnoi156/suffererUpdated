@@ -8,6 +8,9 @@ import { useUserStore, useLoadingStore } from "@/stateManagment/zustand";
 import FollowersM from "../Modals/FollowersM";
 import ProfileNavM from "../Modals/ProfileNavM";
 import { Badge, Button, Chip } from "@nextui-org/react";
+import { motion } from "framer-motion";
+import BottomSheetBar from "../BottomSheetBar";
+
 
 export default function MainProfile({
   routeUser,
@@ -26,7 +29,7 @@ export default function MainProfile({
   //* store States
   const { currentUserData, setFollowersAndFollowings, followersAndFollowings } =
     useUserStore();
-  const { loading, setProgress } = useLoadingStore();
+  const { loading, setProgress, setLoading } = useLoadingStore();
   const [followersLoading, setFollowersLoading] = useState(false);
 
   //* followers and followings
@@ -87,6 +90,33 @@ export default function MainProfile({
     }
   };
 
+  const { savedPosts, setSavedPosts, likedPosts, setLikedPosts } =
+    useUserStore();
+  const getAdditionalPosts = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch("/api/posts/getUserPosts", {
+        method: "POST",
+        body: JSON.stringify({
+          username: routeUser?.username,
+          postType: postType,
+        }),
+      });
+      const data = await response.json();
+      if (response.status === 200) {
+        if (postType === "savedPosts") {
+          setSavedPosts(data.data);
+        } else if (postType === "likedPosts") {
+          setLikedPosts(data.data);
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Use Effect
   useEffect(() => {
     if (
@@ -96,52 +126,29 @@ export default function MainProfile({
     ) {
       getUsers();
     }
+    if (
+      (postType === "savedPosts" &&
+        savedPosts.length === 0 &&
+        routeUserData?.savedPosts !== 0) ||
+      (postType === "likedPosts" &&
+        likedPosts.length === 0 &&
+        routeUserData?.likedPosts !== 0)
+    ) {
+      getAdditionalPosts();
+    }
     // Cleanup function to remove the event listener
-  }, [routeUserData, isGetUserClicked]);
+  }, [routeUserData, isGetUserClicked, postType]);
 
   return (
     <>
       <div className="sm:w-5/6 lg:w-5/6 xl:5/6 w-full h-full dark:text-white text-black flex flex-col justify-center items-center px-4 ">
-        <div
-          className={`sm:hidden fixed bottom-0 left-0 w-screen h-fit px-4 mb-12 ${
-            toggleBtmNav ? "-z-50" : "z-30"
-          }`}
-        >
-          <div
-            className={`w-full h-full ${
-              toggleBtmNav ? "opacity-0 translate-y-full" : "opacity-100"
-            } bg-gray-600 rounded-t-3xl box-border overflow-hidden`}
-            ref={bottomDivRef}
-            style={{ transition: ".2s" }}
-          >
-            <div className="w-full h-8 flex items-center justify-center">
-              <div className="bg-white w-1/4 h-1 rounded-full"></div>
-            </div>
-            <div className="h-full pb-4 w-full bg-gray-600 flex flex-col justify-center gap-4 pt-2 ">
-              <div className="w-full flex items-center justify-start text-2xl px-4">
-                <Link
-                  href="/setting"
-                  className="flex items-center justify-center gap-4"
-                >
-                  <i className="fa-solid fa-gear text-white select-none text-lg"></i>
-                  Setting
-                </Link>
-              </div>
-              <div className="w-full flex items-center justify-start px-4 gap-4 text-2xl">
-                <Link
-                  href="/projectrepo"
-                  className="flex items-center justify-center gap-4"
-                >
-                  <i className="fa-solid fa-question"></i>About
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
+        <>
+         
+        </>
         {/* mobile navigation */}
         <div className="w-full h-14 sm:hidden block ">
           <div className="w-full h-14 fixed dark:bg-black bg-white sm:hidden border-b border-gray-800 top-0 left-0 z-50">
-            <div className="flex items-center justify-between w-full px-2 h-full  text-black dark:text-white ">
+            <div className="flex items-center justify-between w-full px-4 h-full  text-black dark:text-white ">
               <div>{currentUserData?.user?.username || "error"}</div>
               <div className="flex gap-4 items-center justify-between">
                 <Link
@@ -163,88 +170,124 @@ export default function MainProfile({
                 <Link href="/projectrepo">
                   <i className="fa-solid fa-circle-info text-lg select-none"></i>
                 </Link>
-                <i
-                  className="fa-solid fa-bars text-lg select-none"
-                  onClick={handleToggleBottomInfo}
-                ></i>
+                <BottomSheetBar/>
               </div>
             </div>
           </div>
         </div>
-        <div className="sticky top-14 sm:top-0 z-50 dark:bg-black bg-white w-full h-fit flex flex-col pb-4" id="shadow-div">
-        <div className=" border-l-indigo-700 w-full flex flex-col sm:flex-row gap-4 justify-evenly pt-2 md:pt-8 sm:pb-10 pb-2 border-gray-700  ">
-          <div className="flex gap-4 items-center justify-center w-fit">
-            {/* common image for mobile & desktop */}
-            <div
-              className={`sm:h-40 sm:w-40 h-16 w-16 ${
-                !loading && "border-2"
-              } rounded-full border-violet-500 p-[2px]`}
-            >
-              {loading ? (
-                <div className="h-full w-full flex items-center justify-center ">
-                  <svg
-                    aria-hidden="true"
-                    role="status"
-                    className="inline w-8 h-8 text-white animate-spin "
-                    viewBox="0 0 100 101"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-                      fill="#E5E7EB"
-                    />
-                    <path
-                      d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                </div>
-              ) : (
-                <img
-                  draggable="false"
-                  src={routeUser?.image}
-                  alt="notfound"
-                  className="h-full w-full rounded-full object-cover cursor-pointer select-none"
-                  onClick={() => setImageClick(true)}
-                />
-              )}
-            </div>
-            {/* view image  */}
-            {imageClick ? (
+        <div
+          className="sticky top-14 sm:top-0 z-50 dark:bg-black bg-white w-full h-fit flex flex-col pb-4"
+          id="shadow-div"
+        >
+          <div className=" border-l-indigo-700 w-full flex flex-col sm:flex-row gap-4 justify-evenly pt-2 md:pt-8 sm:pb-10 pb-2 border-gray-700  ">
+            <div className="flex gap-4 items-center justify-center w-fit">
+              {/* common image for mobile & desktop */}
               <div
-                className="h-screen w-screen backdrop-blur-lg flex items-center justify-center fixed top-0 left-0 z-50"
-                onClick={() => setImageClick(false)}
+                className={`sm:h-40 sm:w-40 h-16 w-16 ${
+                  !loading && routeUser?.image && "border-2"
+                } rounded-full border-violet-500 p-[2px]`}
               >
-                <div className="h-52 w-52 lg:h-96 lg:w-96 rounded-full p-3 ">
+                {loading && !routeUser?.image ? (
+                  <div className="h-full w-full flex items-center justify-center ">
+                    <svg
+                      aria-hidden="true"
+                      role="status"
+                      className="inline w-8 h-8 text-white animate-spin "
+                      viewBox="0 0 100 101"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                        fill="#E5E7EB"
+                      />
+                      <path
+                        d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                  </div>
+                ) : (
                   <img
                     draggable="false"
                     src={routeUser?.image}
-                    alt="not found"
-                    className="h-full w-full rounded-full object-cover border-4 border-violet-600 p-[2px] hover:scale-105 transition duration-300 select-none"
+                    alt="notfound"
+                    className="h-full w-full rounded-full object-cover cursor-pointer select-none"
+                    onClick={() => setImageClick(true)}
+                  />
+                )}
+              </div>
+              {/* view image  */}
+              {imageClick ? (
+                <div
+                  className="h-screen w-screen backdrop-blur-lg flex items-center justify-center fixed top-0 left-0 z-50"
+                  onClick={() => setImageClick(false)}
+                >
+                  <div className="h-52 w-52 lg:h-96 lg:w-96 rounded-full p-3 ">
+                    <img
+                      draggable="false"
+                      src={routeUser?.image}
+                      alt="not found"
+                      className="h-full w-full rounded-full object-cover border-4 border-violet-600 p-[2px] hover:scale-105 transition duration-300 select-none"
+                    />
+                  </div>
+                </div>
+              ) : (
+                <></>
+              )}
+              {/* For Mobile Profile */}
+              <div className="flex flex-col gap-2 sm:hidden justify-center items-start text-sm">
+                <div className="flex gap-6 items-center">
+                  <div>@{routeUser?.username}</div>
+                  {pathname === "/profile" ? (
+                    <i
+                      className="fa-solid fa-pen-to-square cursor-pointer select-none"
+                      onClick={() => {
+                        router.push("/setting");
+                      }}
+                    ></i>
+                  ) : (
+                    <></>
+                  )}
+                </div>
+                <div className="flex gap-2 text-center text-xs">
+                  <div>{routeUserPosts?.length} Posts</div>
+                  <FollowersM
+                    text={`${routeUser?.followers?.length || 0} Followers`}
+                    users={followersAndFollowings?.followers}
+                    type={"Followers"}
+                    setIsGetUserClicked={setIsGetUserClicked}
+                    followersLoading={followersLoading}
+                  />
+                  <FollowersM
+                    text={`${routeUser?.followings?.length || 0} Followings`}
+                    users={followersAndFollowings?.followings}
+                    type={"Followings"}
+                    setIsGetUserClicked={setIsGetUserClicked}
+                    followersLoading={followersLoading}
                   />
                 </div>
               </div>
-            ) : (
-              <></>
-            )}
-            {/* For Mobile Profile */}
-            <div className="flex flex-col gap-2 sm:hidden justify-center items-start text-sm">
-              <div className="flex gap-6 items-center">
-                <div>@{routeUser?.username}</div>
-                {pathname === "/profile" ? (
-                  <i
-                    className="fa-solid fa-pen-to-square cursor-pointer select-none"
-                    onClick={() => {
-                      router.push("/setting");
-                    }}
-                  ></i>
-                ) : (
-                  <></>
-                )}
+            </div>
+            {/* For Desktop Profile */}
+            <div className="flex flex-col gap-2 sm:w-1/2 w-full">
+              <div className="hidden sm:flex items-center justify-between h-6">
+                <div className="flex items-center justify-center">
+                  <div>@{routeUser?.username}</div>
+                  {pathname === "/profile" ? (
+                    <i
+                      className="fa-solid fa-pen-to-square cursor-pointer hover:scale-110 ml-8 transition-all select-none"
+                      onClick={() => {
+                        router.push("/setting");
+                      }}
+                    ></i>
+                  ) : (
+                    <></>
+                  )}
+                </div>
               </div>
-              <div className="flex gap-2 text-center text-xs">
-                <div>{routeUserPosts?.length} Posts</div>
+              <div className="hidden gap-8 sm:flex">
+                <div>{routeUserPosts?.length || 0} Posts</div>
                 <FollowersM
                   text={`${routeUser?.followers?.length || 0} Followers`}
                   users={followersAndFollowings?.followers}
@@ -260,102 +303,66 @@ export default function MainProfile({
                   followersLoading={followersLoading}
                 />
               </div>
-            </div>
-          </div>
-          {/* For Desktop Profile */}
-          <div className="flex flex-col gap-2 sm:w-1/2 w-full">
-            <div className="hidden sm:flex items-center justify-between h-6">
-              <div className="flex items-center justify-center">
-                <div>@{routeUser?.username}</div>
+              <div>
+                <strong>
+                  {routeUser?.given_name} {routeUser?.family_name}
+                </strong>
+                <p className="w-full overflow-auto bg-transparent whitespace-pre-line text-sm mb-2">
+                  {routeUser?.about}
+                </p>
                 {pathname === "/profile" ? (
-                  <i
-                    className="fa-solid fa-pen-to-square cursor-pointer hover:scale-110 ml-8 transition-all select-none"
-                    onClick={() => {
-                      router.push("/setting");
-                    }}
-                  ></i>
-                ) : (
-                  <></>
-                )}
-              </div>
-            </div>
-            <div className="hidden gap-8 sm:flex">
-              <div>{routeUserPosts?.length || 0} Posts</div>
-              <FollowersM
-                text={`${routeUser?.followers?.length || 0} Followers`}
-                users={followersAndFollowings?.followers}
-                type={"Followers"}
-                setIsGetUserClicked={setIsGetUserClicked}
-                followersLoading={followersLoading}
-              />
-              <FollowersM
-                text={`${routeUser?.followings?.length || 0} Followings`}
-                users={followersAndFollowings?.followings}
-                type={"Followings"}
-                setIsGetUserClicked={setIsGetUserClicked}
-                followersLoading={followersLoading}
-              />
-            </div>
-            <div>
-              <strong>
-                {routeUser?.given_name} {routeUser?.family_name}
-              </strong>
-              <p className="w-full overflow-auto bg-transparent whitespace-pre-line text-sm mb-2">
-                {routeUser?.about}
-              </p>
-              {pathname === "/profile" ? (
-                <Link href="/setting" prefetch>
-                  <Button
-                    color="primary"
-                    variant="solid"
-                    className="py-0"
-                    size="sm"
-                  >
-                    Edit Profile
-                  </Button>
-                </Link>
-              ) : (
-                Object.keys(currentUserData).length !== 0 && (
-                  <div className="my-4 flex gap-4">
-                    <Button
-                      color={`${
-                        routeUser?.followers?.some(
-                          (user) => user._id === currentUserData?.user?._id
-                        )
-                          ? "default"
-                          : "primary"
-                      }`}
-                      variant="solid"
-                      className="py-0"
-                      isLoading={followClicked}
-                      size="sm"
-                      onClick={async () => {
-                        handleFollowUser();
-                      }}
-                    >
-                      {routeUser?.followers?.some(
-                        (user) => user._id === currentUserData?.user?._id
-                      )
-                        ? "Following"
-                        : "Follow"}
-                    </Button>
+                  <Link href="/setting" prefetch>
                     <Button
                       color="primary"
                       variant="solid"
                       className="py-0"
                       size="sm"
                     >
-                      Message
+                      Edit Profile
                     </Button>
-                  </div>
-                )
-              )}
+                  </Link>
+                ) : (
+                  Object.keys(currentUserData).length !== 0 && (
+                    <div className="my-4 flex gap-4">
+                      <Button
+                        color={`${
+                          routeUser?.followers?.some(
+                            (user) => user._id === currentUserData?.user?._id
+                          )
+                            ? "default"
+                            : "primary"
+                        }`}
+                        variant="solid"
+                        className="py-0"
+                        isLoading={followClicked}
+                        size="sm"
+                        onClick={async () => {
+                          handleFollowUser();
+                        }}
+                      >
+                        {routeUser?.followers?.some(
+                          (user) => user._id === currentUserData?.user?._id
+                        )
+                          ? "Following"
+                          : "Follow"}
+                      </Button>
+                      <Button
+                        color="primary"
+                        variant="solid"
+                        className="py-0"
+                        size="sm"
+                      >
+                        Message
+                      </Button>
+                    </div>
+                  )
+                )}
+              </div>
             </div>
           </div>
-        </div>
-        
-        {pathname === "/profile" ? (
-            <div className="flex gap-8 w-fit select-none items-center justify-center">
+
+          {pathname === "/profile" ? (
+            <div className="self-center select-none">
               <ProfileNavM
                 setPostType={setPostType}
                 routeUserData={routeUserData}
@@ -410,7 +417,7 @@ export default function MainProfile({
             ) : postType === "savedPosts" ? (
               <>
                 <Posts
-                  posts={routeUserData?.savedPosts}
+                  posts={savedPosts}
                   section={section}
                   postType={postType}
                   dataLoading={loading}
@@ -419,7 +426,7 @@ export default function MainProfile({
               </>
             ) : (
               <Posts
-                posts={routeUserData?.likedPosts}
+                posts={likedPosts}
                 section={section}
                 postType={postType}
                 dataLoading={loading}

@@ -1,4 +1,4 @@
-import User from ".@/models/user";
+import User from "@/models/user";
 import { connectToDB } from "@/utils/database";
 
 export const PATCH = async (request, { params }) => {

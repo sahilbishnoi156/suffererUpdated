@@ -9,6 +9,9 @@ export const GET = async (request) => {
     await connectToDB();
 
     const token = await getTokenData(request);
+    if(!token){
+      return new Response("Token Not Found", { status: 404 });
+    }
     const currentUserId = token._id;
     const currentUserIdObj = new ObjectId(currentUserId);
 

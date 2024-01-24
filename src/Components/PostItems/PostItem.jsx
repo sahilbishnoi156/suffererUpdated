@@ -196,11 +196,7 @@ export default function PostItem({ post, id }) {
 
   //! Handle User Id Click
   const handleUserIdClick = () => {
-    if (pathname !== "/profile") {
-      if (post?.creator._id === currentUserData?.user?._id)
-        return router.push(`/profile`);
-      router.push(`/profile/${post?.creator?.username}`);
-    }
+    router.push(`/profile/${post?.creator?.username}`);
   };
 
   //! Get Comments
@@ -241,7 +237,7 @@ export default function PostItem({ post, id }) {
           number: post?.comments?.length,
         },
         save: {
-          isSaved: currentUserData?.savedPosts?.some(
+          isSaved: currentUserData?.user?.savedPosts?.some(
             (savedPost) => savedPost?._id === post?._id
           ),
         },

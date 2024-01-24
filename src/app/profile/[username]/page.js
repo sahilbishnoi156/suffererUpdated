@@ -52,7 +52,6 @@ export default function page({ params }) {
 
   return (
     <div className="w-full flex justify-center items-center mb-16">
-      <Head></Head>
       <LoadingBar
         color="#f11946"
         progress={progress}

@@ -8,13 +8,11 @@ import {
   Input,
   ScrollShadow,
   Avatar,
-  Tooltip,
 } from "@nextui-org/react";
-import { useLoadingStore, useUserStore } from "@/stateManagment/zustand";
+import { useUserStore } from "@/stateManagment/zustand";
 import Skeleton from "../Skeleton";
 import CommentInfoM from "./CommentInfoM";
 import { toast } from "react-toastify";
-import { UserM } from "./UserM";
 
 export default function CommentM({
   post,
@@ -41,7 +39,7 @@ export default function CommentM({
     if (window.innerWidth < 700) {
       setSmallWindow(true);
     }
-  }, [window.innerWidth]);
+  }, [window.innerWidth, inputRef.current]);
 
   return (
     <div className="flex flex-col gap-2 ">

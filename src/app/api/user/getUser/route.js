@@ -9,6 +9,11 @@
     try {
       await connectToDB();
       const tokenData = await getTokenData(request);
+      if(!tokenData){
+        return new Response(JSON.stringify({ error: "Token Not Found" }), {
+          status: 404,
+        });
+      }
       const username = tokenData.username;
 
       // Find the user
@@ -25,35 +30,13 @@
         "creator"
       );
       // Find saved and liked posts, sorting directly in the MongoDB query
-      const savedPosts = await Post.find({_id: { $in: foundUser.savedPosts.map((post) => post._id) },}).populate("creator");
-      const likedPosts = await Post.find({_id: { $in: foundUser.likedPosts.map((post) => post._id) },}).populate("creator");
-
-      // Sort savedPosts and likedPosts separately based on likedAt value
-      savedPosts.sort((a, b) => {
-        const aSavedAt = foundUser.savedPosts.find(lp => lp._id.toString() === a._id.toString())?.savedAt;
-        const bSavedAt = foundUser.savedPosts.find(lp => lp._id.toString() === b._id.toString())?.savedAt;
-        if (aSavedAt && bSavedAt) {
-          return new Date(bSavedAt) - new Date(aSavedAt); // Sort descending by likedAt
-        } else {
-          return 0; // Keep original order if likedAt is missing
-        }
-      });
-      likedPosts.sort((a, b) => {
-        const aLikedAt = foundUser.likedPosts.find(lp => lp._id.toString() === a._id.toString())?.likedAt;
-        const bLikedAt = foundUser.likedPosts.find(lp => lp._id.toString() === b._id.toString())?.likedAt;
-        if (aLikedAt && bLikedAt) {
-          return new Date(bLikedAt) - new Date(aLikedAt); // Sort descending by likedAt
-        } else {
-          return 0; // Keep original order if likedAt is missing
-        }
-      });
 
       // Combine user, posts, savedPosts, and likedPosts data
       const data = {
         user: foundUser,
         posts: userPosts.sort((a, b) => b.createdAt - a.createdAt),
-        savedPosts: savedPosts,
-        likedPosts: likedPosts,
+        savedPosts: foundUser?.savedPosts?.length,
+        likedPosts: foundUser?.likedPosts?.length,
       };
 
       return new Response(JSON.stringify(data), { status: 200 });

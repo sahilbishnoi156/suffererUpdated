@@ -24,7 +24,7 @@ export default function ProfileNavM({ setPostType, routeUserData, postType }) {
             <div className="flex items-center space-x-1 sm:space-x-2 text-xs sm:text-sm">
               <i className="fa-solid fa-bookmark"></i>
               <span>Saved Posts</span>
-              <Chip variant="solid" size="sm" className={`group-data-[selected=true]:bg-[#06b6d4] dark:bg-gray-400  h-5 w-5 sm:flex hidden items-center justify-center`}>{routeUserData?.savedPosts?.length || 0}</Chip>
+              <Chip variant="solid" size="sm" className={`group-data-[selected=true]:bg-[#06b6d4] dark:bg-gray-400  h-5 w-5 sm:flex hidden items-center justify-center`}>{routeUserData?.savedPosts || 0}</Chip>
             </div>
           }
         />
@@ -68,7 +68,7 @@ export default function ProfileNavM({ setPostType, routeUserData, postType }) {
               <i className="fa-solid fa-heart text-red-500"></i>
               <span>Liked Posts</span>
               <Chip variant="solid" size="sm" className={`group-data-[selected=true]:bg-[#06b6d4] dark:bg-gray-400 h-5 w-5 items-center justify-center sm:flex hidden`}>
-                {routeUserData?.likedPosts?.length}
+                {routeUserData?.likedPosts || 0}
               </Chip>
             </div>
           }
