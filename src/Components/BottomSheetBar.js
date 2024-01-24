@@ -13,9 +13,8 @@ function usePrevious(value) {
   return previousValueRef.current;
 }
 
-function BottomSheet({ isClosed, setIsClosed, buttonRef }) {
+function BottomSheet({ isClosed, setIsClosed }) {
   const [isOpen, setIsOpen] = useState(false);
-  const divRef = useRef(null)
 
   function onClose() {
     setIsOpen(false);
@@ -43,21 +42,6 @@ function BottomSheet({ isClosed, setIsClosed, buttonRef }) {
       onOpen();
     }
   }
-
-  useEffect(() => {
-    document.addEventListener('click', (e)=>{
-      if (divRef.current && !divRef.current.contains(e.target) && buttonRef.current && !buttonRef.current.contains(e.target)) {
-        setIsClosed(false)
-      }
-    });
-  
-    return () => {
-      document.removeEventListener('click', (e)=>{
-        if (divRef.current && !divRef.current.contains(e.target)) {
-          setIsClosed(false)
-        }})
-    };
-  }, [])
   
   useEffect(() => {
     if (prevIsOpen && !isOpen) {
@@ -113,7 +97,6 @@ function BottomSheet({ isClosed, setIsClosed, buttonRef }) {
       }}
       dragConstraints={{ top: 0 }}
       dragElastic={0.2}
-      ref={divRef}
       className="fixed bottom-0 left-0 w-full z-[100000] dark:bg-[#151515] bg-white text-black dark:text-white rounded-xl h-1/2"
     >
       <div className="w-full h-8 flex items-center justify-center">
@@ -158,13 +141,12 @@ function BottomSheet({ isClosed, setIsClosed, buttonRef }) {
 
 export default function BottomSheetBar() {
   const [isClosed, setIsClosed] = useState(true);
-  const buttonRef = useRef(null);
   return (
     <>
-      <button className="" onClick={() => setIsClosed(!isClosed)} ref={buttonRef}>
+      <button className="" onClick={() => setIsClosed(!isClosed)}>
         <i className="fa-solid fa-bars text-lg select-none"></i>
       </button>
-      <BottomSheet isClosed={isClosed} setIsClosed={setIsClosed} buttonRef={buttonRef}/>
+      <BottomSheet isClosed={isClosed} setIsClosed={setIsClosed} />
     </>
   );
 }

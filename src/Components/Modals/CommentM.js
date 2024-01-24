@@ -61,7 +61,7 @@ export default function CommentM({
         size={`${post?.image ? "xl" : "xl"}`}
         onOpenChange={onOpenChange}
         scrollBehavior={"inside"}
-        placement={`${smallWindow ? "top" : "center"}`}
+        placement={`center`}
       >
         <ModalContent className="bg-white dark:bg-[#151515] dark:text-white text-black ">
           {(onClose) => (
