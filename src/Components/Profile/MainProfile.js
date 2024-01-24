@@ -19,7 +19,6 @@ export default function MainProfile({
   section,
   params,
 }) {
-  const [toggleBtmNav, setToggleBtmNav] = useState(true);
   const [imageClick, setImageClick] = useState(false);
   const [followClicked, setFollowClicked] = useState(false);
   const [postType, setPostType] = useState("userPosts");
@@ -48,19 +47,9 @@ export default function MainProfile({
       setFollowersLoading(false);
     }
   };
-
-  // Ref
-  const profileNavRef = useRef();
-  const bottomDivRef = useRef();
-
   // Hooks
   const router = useRouter();
   const pathname = usePathname();
-
-  //
-  const handleToggleBottomInfo = () => {
-    setToggleBtmNav(!toggleBtmNav);
-  };
 
   // Handling Clicking on followers
   const handleFollowUser = async () => {
@@ -118,10 +107,7 @@ export default function MainProfile({
 
   // Use Effect
   useEffect(() => {
-    if (
-      followersAndFollowings.length === 0 &&
-      Object.keys(routeUserData).length !== 0 &&
-      isGetUserClicked
+    if ((followersAndFollowings.length === 0 && Object.keys(routeUserData).length !== 0) || isGetUserClicked
     ) {
       getUsers();
     }
@@ -317,7 +303,7 @@ export default function MainProfile({
                 <p className="w-full overflow-auto bg-transparent whitespace-pre-line text-sm mb-2">
                   {routeUser?.about}
                 </p>
-                {pathname === "/profile" ? (
+                {pathname === "/profile" || routeUser?.username === currentUserData?.user?.username ? (
                   <Link href="/setting" prefetch>
                     <Button
                       color="primary"

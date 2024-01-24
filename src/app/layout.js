@@ -47,7 +47,6 @@ export default function RootLayout({ children }) {
         </div>
         <Script
           src="https://kit.fontawesome.com/f8f9825bbd.js"
-          crossOrigin="anonymous"
           rel="preload"
           as="script"
           />

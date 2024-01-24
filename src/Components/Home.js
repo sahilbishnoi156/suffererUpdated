@@ -8,6 +8,8 @@ import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { useUserStore } from "@/stateManagment/zustand";
 
+
+
 export default function Home() {
   const { setCurrentUserData, currentUserData, setMainPagePosts, mainPagePosts } = useUserStore();
   // const [posts, setPosts] = useState([]);
@@ -21,19 +23,24 @@ export default function Home() {
     setDataLoading(true);
     setProgress(30);
     try {
-      const timestamp = new Date().getTime();
       const postsResponse = await fetch(
-        `/api/posts?_limit=4&timestamp=${timestamp}`,
+        `/api/posts?_limit=4`,
         {
           next: { revalidate: 60 },
+          method: 'POST',
+          body: JSON.stringify({
+            userId: currentUserData?.user?._id
+          })
         }
       );
       setProgress(50);
       const postsData = await postsResponse.json();
       setMainPagePosts(postsData?.posts)
-      // setPosts(postsData?.posts);
     } catch (error) {
       console.log(error);
+    }finally{
+      setDataLoading(false)
+      setProgress(100);
     }
   };
   const fetchData = async () => {
@@ -43,7 +50,6 @@ export default function Home() {
       const data = await userResponse.json();
       if (!data.tokenExpired) {
         setCurrentUserData(data);
-        setDataLoading(false);
         setProgress(100);
         return;
       }
@@ -61,15 +67,20 @@ export default function Home() {
     } catch (error) {
       console.log("Failed to get data", error);
     } finally {
-      setDataLoading(false);
       setProgress(100);
     }
   };
 
   const fetchMoreData = async () => {
-    const timestamp = new Date().getTime();
     const response = await fetch(
-      `/api/posts?_start=${mainPagePosts?.length}&_limit=4&timestamp=${timestamp}`
+      `/api/posts?_start=${mainPagePosts?.length}&_limit=4`,
+      {
+        next: { revalidate: 60 },
+        method: 'POST',
+        body: JSON.stringify({
+          userId: currentUserData?.user?._id
+        })
+      }
     );
     const data = await response.json();
     setMainPagePosts([...mainPagePosts, ...data.posts]);
@@ -87,15 +98,16 @@ export default function Home() {
     </div>
   );
 
+
   useEffect(() => {
-    if (mainPagePosts?.length <= 0) {
+    if (mainPagePosts?.length <= 0 && Object.keys(currentUserData)?.length !== 0) {
       fetchInitialPosts();
     }
 
     if (Object.keys(currentUserData)?.length === 0) {
       fetchData();
     }
-  }, []);
+  }, [currentUserData]);
   return (
     <>
       <div className="dark:text-white text-black box-border flex justify-end dark:bg-black bg-white ">
