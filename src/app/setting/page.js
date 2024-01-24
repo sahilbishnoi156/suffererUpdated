@@ -58,7 +58,7 @@ export default function page() {
   const fetchUser = async () => {
     try {
       setProgress(40);
-      const response = await fetch(`/api/users/getUser`);
+      const response = await fetch(`/api/user/getUser`);
       setProgress(80);
       const data = await response.json();
       setCurrentUserData(data);

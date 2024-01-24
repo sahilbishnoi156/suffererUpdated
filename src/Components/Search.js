@@ -16,7 +16,7 @@ export default function Search({
       setIsLoading(true); // Show loading state
       setDataLoading(true)
       const encodedInput = encodeURIComponent(searchInput);
-      const response = await fetch(`/api/users/findUser/${encodedInput}`);
+      const response = await fetch(`/api/user/findUser/${encodedInput}`);
       const data = await response.json();
       Array.isArray(data) ? setUsers(data) : setUsers([data]);
     } catch (error) {

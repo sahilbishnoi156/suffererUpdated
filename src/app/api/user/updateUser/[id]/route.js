@@ -1,5 +1,5 @@
-import User from "../../../../../models/user";
-import { connectToDB } from "../../../../../utils/database";
+import User from ".@/models/user";
+import { connectToDB } from "@/utils/database";
 
 export const PATCH = async (request, { params }) => {
     const { username, given_name, family_name, email, image, about  } = await request.json();

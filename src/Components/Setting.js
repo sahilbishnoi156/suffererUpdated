@@ -2,7 +2,6 @@
 import { useState, useRef, useEffect } from "react";
 import Loading from "../Components/Loading";
 import { toast } from "react-toastify";
-import { Input } from "@nextui-org/react";
 
 export default function Setting({ handleLogOut, user, id, setProgress }) {
   // States
@@ -38,10 +37,10 @@ export default function Setting({ handleLogOut, user, id, setProgress }) {
   const checkUsernameExists = async (username) => {
     try {
       const response = await fetch(
-        `/api/users/checkusername/byusername/${username}`
+        `/api/user/available/username/${username}`
       );
       const data = await response.json();
-      if (data.foundUsername) {
+      if (data.userAvailable) {
         setUsernameExists(true); // Username exist
       } else {
         setUsernameExists(false); // Username does not exists
@@ -97,7 +96,7 @@ export default function Setting({ handleLogOut, user, id, setProgress }) {
       }
 
       // Changing other data
-      const response = await fetch(`/api/users/updateUser/${id}`, {
+      const response = await fetch(`/api/user/updateUser/${id}`, {
         method: "PATCH",
         body: JSON.stringify({
           username: currentUser?.username,

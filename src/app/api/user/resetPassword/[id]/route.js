@@ -1,5 +1,5 @@
-import User from "../../../../../models/user";
-import { connectToDB } from "../../../../../utils/database";
+import User from "@/models/user";
+import { connectToDB } from "@/utils/database";
 import bcrypt from "bcrypt";
 
 export const PATCH = async (request, { params }) => {
