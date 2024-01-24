@@ -34,9 +34,10 @@ export default function page({ params }) {
       }
       const cCata = await cUser.json();
       setCurrentUserData(cCata)
-      setProgress(100);
     } catch (error) {
       console.error(error);
+    } finally{
+      setProgress(100);
     }
   };
   

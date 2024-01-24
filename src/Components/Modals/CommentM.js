@@ -29,17 +29,13 @@ export default function CommentM({
   buttonData,
 }) {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [smallWindow, setSmallWindow] = React.useState(false);
   const inputRef = React.useRef(null);
 
   React.useEffect(() => {
     if (inputRef.current) {
       inputRef.current.focus();
     }
-    if (window.innerWidth < 700) {
-      setSmallWindow(true);
-    }
-  }, [window.innerWidth, inputRef.current]);
+  }, [inputRef.current]);
 
   return (
     <div className="flex flex-col gap-2 ">

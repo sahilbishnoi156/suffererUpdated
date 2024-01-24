@@ -7,10 +7,9 @@ import Posts from "@/Components/PostItems/Posts";
 import { useUserStore, useLoadingStore } from "@/stateManagment/zustand";
 import FollowersM from "../Modals/FollowersM";
 import ProfileNavM from "../Modals/ProfileNavM";
-import { Badge, Button, Chip } from "@nextui-org/react";
+import { Badge, Button, Chip, Tooltip } from "@nextui-org/react";
 import { motion } from "framer-motion";
 import BottomSheetBar from "../BottomSheetBar";
-
 
 export default function MainProfile({
   routeUser,
@@ -142,9 +141,7 @@ export default function MainProfile({
   return (
     <>
       <div className="sm:w-5/6 lg:w-5/6 xl:5/6 w-full h-full dark:text-white text-black flex flex-col justify-center items-center px-4 ">
-        <>
-         
-        </>
+        <></>
         {/* mobile navigation */}
         <div className="w-full h-14 sm:hidden block ">
           <div className="w-full h-14 fixed dark:bg-black bg-white sm:hidden border-b border-gray-800 top-0 left-0 z-50">
@@ -170,13 +167,13 @@ export default function MainProfile({
                 <Link href="/projectrepo">
                   <i className="fa-solid fa-circle-info text-lg select-none"></i>
                 </Link>
-                <BottomSheetBar/>
+                <BottomSheetBar />
               </div>
             </div>
           </div>
         </div>
         <div
-          className="sticky top-14 sm:top-0 z-50 dark:bg-black bg-white w-full h-fit flex flex-col pb-4"
+          className=" dark:bg-black bg-white w-full h-fit flex flex-col pb-4"
           id="shadow-div"
         >
           <div className=" border-l-indigo-700 w-full flex flex-col sm:flex-row gap-4 justify-evenly pt-2 md:pt-8 sm:pb-10 pb-2 border-gray-700  ">
@@ -238,7 +235,12 @@ export default function MainProfile({
               {/* For Mobile Profile */}
               <div className="flex flex-col gap-2 sm:hidden justify-center items-start text-sm">
                 <div className="flex gap-6 items-center">
-                  <div>@{routeUser?.username}</div>
+                  <div className="flex items-center gap-2">
+                    @{routeUser?.username}
+                    {routeUser?.isVerified && (
+                      <img src="/verified.svg" className="h-4 w-4" />
+                    )}
+                  </div>
                   {pathname === "/profile" ? (
                     <i
                       className="fa-solid fa-pen-to-square cursor-pointer select-none"
@@ -273,7 +275,12 @@ export default function MainProfile({
             <div className="flex flex-col gap-2 sm:w-1/2 w-full">
               <div className="hidden sm:flex items-center justify-between h-6">
                 <div className="flex items-center justify-center">
-                  <div>@{routeUser?.username}</div>
+                  <div className="flex items-center gap-2">
+                    @{routeUser?.username}{" "}
+                    {routeUser?.isVerified && (
+                      <img src="/verified.svg" className="h-4 w-4" />
+                    )}
+                  </div>
                   {pathname === "/profile" ? (
                     <i
                       className="fa-solid fa-pen-to-square cursor-pointer hover:scale-110 ml-8 transition-all select-none"
@@ -321,41 +328,61 @@ export default function MainProfile({
                       Edit Profile
                     </Button>
                   </Link>
-                ) : (
-                  Object.keys(currentUserData).length !== 0 && (
-                    <div className="my-4 flex gap-4">
-                      <Button
-                        color={`${
-                          routeUser?.followers?.some(
-                            (user) => user._id === currentUserData?.user?._id
-                          )
-                            ? "default"
-                            : "primary"
-                        }`}
-                        variant="solid"
-                        className="py-0"
-                        isLoading={followClicked}
-                        size="sm"
-                        onClick={async () => {
-                          handleFollowUser();
-                        }}
-                      >
-                        {routeUser?.followers?.some(
+                ) : Object.keys(currentUserData).length !== 0 ? (
+                  <div className="my-4 flex gap-4">
+                    <Button
+                      color={`${
+                        routeUser?.followers?.some(
                           (user) => user._id === currentUserData?.user?._id
                         )
-                          ? "Following"
-                          : "Follow"}
-                      </Button>
+                          ? "default"
+                          : "primary"
+                      }`}
+                      variant="solid"
+                      className="py-0"
+                      isLoading={followClicked}
+                      size="sm"
+                      onClick={async () => {
+                        handleFollowUser();
+                      }}
+                    >
+                      {routeUser?.followers?.some(
+                        (user) => user._id === currentUserData?.user?._id
+                      )
+                        ? "Following"
+                        : "Follow"}
+                    </Button>
+                    <Button
+                      color="primary"
+                      variant="solid"
+                      className="py-0"
+                      size="sm"
+                    >
+                      Message
+                    </Button>
+                  </div>
+                ) : (
+                  <Tooltip
+                    size="sm"
+                    color="secondary"
+                    content={
+                      <div>
+                        <h1>Please login to interect with user</h1>
+                      </div>
+                    }
+                    showArrow
+                  >
+                    <Link href={"/signIn"}>
                       <Button
                         color="primary"
                         variant="solid"
                         className="py-0"
                         size="sm"
                       >
-                        Message
+                        SignIn
                       </Button>
-                    </div>
-                  )
+                    </Link>
+                  </Tooltip>
                 )}
               </div>
             </div>
@@ -404,8 +431,8 @@ export default function MainProfile({
             </div>
           )}
         </div>
-        <div className="w-full mb-10 ">
-          <div className="w-full">
+        <div className="w-full mb-10">
+          <div className="w-full sm:w-3/4 mx-auto">
             {postType === "userPosts" ? (
               <Posts
                 posts={routeUserPosts}

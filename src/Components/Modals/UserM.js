@@ -68,7 +68,7 @@ export const UserM = ({ user }) => {
             </h5>
           </div>
         </div>
-        {user?._id !== currentUserData?.user?._id && <Button
+        {(user?._id !== currentUserData?.user?._id && Object.keys(currentUserData).length !== 0) && <Button
         isLoading={isFollowingLoading}
           className={
             followInfo?.isFollowed

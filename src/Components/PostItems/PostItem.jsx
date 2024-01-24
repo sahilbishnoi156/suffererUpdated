@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import "@/styles/profile.css";
 import { useUserStore } from "@/stateManagment/zustand";
@@ -17,7 +17,6 @@ export default function PostItem({ post, id }) {
   const { currentUserData } = useUserStore();
 
   // local states
-  const pathname = usePathname();
   const [postTime, setPostTime] = useState("");
   const [togglePostInfo, setTogglePostInfo] = useState(false);
   const [commentInput, setCommentInput] = useState("");
@@ -54,7 +53,7 @@ export default function PostItem({ post, id }) {
     setCommentPosting(true);
     e.preventDefault();
     try {
-      const response = await fetch("api/posts/action/comment/createNew", {
+      const response = await fetch("/api/posts/action/comment/createNew", {
         method: "POST",
         body: JSON.stringify({
           content: commentInput,
@@ -304,13 +303,13 @@ export default function PostItem({ post, id }) {
       {/* Post Body  */}
       <div className="rounded-sm dark:p-2 p-1 w-full">
         {post?.image && (
-          <div className=" h-full w-full">
+          <div className=" h-full w-full aspect-square relative">
             <Image
               src={post?.image}
               alt="notFound"
-              height={1980}
-              width={1080}
-              className="w-full max-h-96 h-full object-contain select-none rounded-sm"
+              fill
+              sizes="(max-width: 768px) 100vw, 700px"
+              className="object-cover select-none rounded-sm"
               draggable={false}
             />
           </div>
@@ -336,6 +335,7 @@ export default function PostItem({ post, id }) {
             </div>
           )}
           <div className="flex flex-col items-center justify-center">
+            {Object.keys(currentUserData).length !== 0 && 
             <CommentM
               buttonData={
                 <svg
@@ -369,7 +369,7 @@ export default function PostItem({ post, id }) {
               commentsLen={postInfo?.comment?.number}
               handleCommentPost={handleCommentPost}
               commentPosting={commentPosting}
-            />
+            />}
           </div>
           <div className="flex flex-col items-center justify-center">
             <svg
@@ -417,6 +417,7 @@ export default function PostItem({ post, id }) {
           </Tooltip>
         </div>
         <div className="flex items-center justify-start text-gray-400 text-base w-full">
+          {Object.keys(currentUserData).length !== 0 &&
           <CommentM
             buttonData={null}
             post={post}
@@ -431,8 +432,9 @@ export default function PostItem({ post, id }) {
             commentsLen={postInfo?.comment?.number}
             handleCommentPost={handleCommentPost}
             commentPosting={commentPosting}
-          />
+          />}
         </div>
+        {Object.keys(currentUserData).length !== 0 && 
         <form
           className="pb-2 flex items-center justify-between relative"
           onSubmit={handleCommentPost}
@@ -470,7 +472,7 @@ export default function PostItem({ post, id }) {
           ) : (
             <i className="fa-regular fa-face-smile-wink text-sm"></i>
           )}
-        </form>
+        </form>}
       </div>
     </div>
   );
