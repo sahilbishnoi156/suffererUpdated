@@ -1,7 +1,6 @@
 import { getTokenData } from "@/helpers/getTokenData";
 import User from "@/models/user";
 import { connectToDB } from "@/utils/database";
-import { revalidatePath } from "next/cache";
 import mongoose from "mongoose";
 const ObjectId = mongoose.Types.ObjectId;
 

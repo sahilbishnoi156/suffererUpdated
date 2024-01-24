@@ -29,7 +29,7 @@ export default function SideProfile({ currentUser }) {
         fetchSuggestedUsers();
       }
     }
-  }, [window.innerWidth]);
+  }, []);
 
   return (
     <div className="h-screen flex flex-col justify-start gap-10 px-8 py-12 fixed border-l-2 border-gray-700 select-none">

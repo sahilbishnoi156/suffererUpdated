@@ -1,5 +1,4 @@
 "use client";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import React from "react";
 
@@ -23,7 +22,12 @@ export default function VerifyToken() {
     const verifyToken = async () => {
       try {
         setLoading(true);
-        const response = await axios.post(`/api/users/verifytoken`, { token });
+        const response = await fetch(`/api/users/verifytoken`, { 
+          method:"POST",
+          body: JSON.stringify({
+            token:token
+          })
+         });
         console.log(response);
         router.push("/profile");
       } catch (error) {

@@ -6,14 +6,15 @@ const ObjectId = mongoose.Types.ObjectId;
 
 
 export const PATCH = async (request) => {
-  if (request.method !== "PATCH") {
-    return new Response("Method not allowed", { status: 405 });
-  }
-  const { postId } = await request.json();
+  
   try {
+    await connectToDB();
+    if (request.method !== "PATCH") {
+      return new Response("Method not allowed", { status: 405 });
+    }
+    const { postId } = await request.json();
     const tokenData = await getTokenData(request)
     const userId = tokenData._id;
-    await connectToDB();
 
     // Find the existing follower and following users by their IDs
     const foundUser = await User.findById(userId);

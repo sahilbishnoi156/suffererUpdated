@@ -6,9 +6,6 @@ import UploadPost from "@/Components/PostItems/UploadPost";
 import Loading from "@/Components/Loading";
 import Head from "next/head";
 
-export const metadata = {
-  title: 'Update Post · Sufferer',
-}
 
 export default function page() {
   const router = useRouter();
