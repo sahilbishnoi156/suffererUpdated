@@ -26,15 +26,13 @@
       }
 
       // Find all posts of the user
-      const userPosts = await Post.find({ creator: foundUser._id }).populate(
-        "creator"
-      );
+      const userPosts = await Post.find({ creator: foundUser._id }).populate("creator").sort({createdAt: -1});
       // Find saved and liked posts, sorting directly in the MongoDB query
 
       // Combine user, posts, savedPosts, and likedPosts data
       const data = {
         user: foundUser,
-        posts: userPosts.sort((a, b) => b.createdAt - a.createdAt),
+        posts: userPosts,
         savedPosts: foundUser?.savedPosts?.length,
         likedPosts: foundUser?.likedPosts?.length,
       };

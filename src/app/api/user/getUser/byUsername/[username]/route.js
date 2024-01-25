@@ -19,13 +19,13 @@ export const GET = async (request, { params }) => {
     }
 
     // Find all posts of the user
-    const userPosts = await Post.find({ creator: foundUser._id }).populate('creator');
+    const userPosts = await Post.find({ creator: foundUser._id }).populate('creator').sort({createdAt: -1});
 
 
     // Combine user and post data
     const data = {
       user: foundUser,
-      posts: userPosts.sort((a, b) => b.createdAt - a.createdAt),
+      posts: userPosts
     };
     
 

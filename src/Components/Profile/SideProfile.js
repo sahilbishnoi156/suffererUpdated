@@ -34,29 +34,34 @@ export default function SideProfile({ currentUser }) {
   return (
     <div className="h-screen flex flex-col justify-start gap-10 px-8 py-12 fixed border-l-2 border-gray-700 select-none">
       {!dataLoading ? (
-        <Tooltip placement={"left"}
-        content={"open profile"}
-        showArrow
-        delay={200}
-        size="sm"
-        color="foreground">
+        <Tooltip
+          placement={"left"}
+          content={"open profile"}
+          showArrow
+          delay={200}
+          size="sm"
+          color="foreground"
+        >
           <Link
             replace
             href="/profile"
             className="flex gap-4 items-center cursor-pointer group justify-start
           w-full"
           >
-            <Image
-              src={
-                currentUser?.image ||
-                "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI="
-              }
-              alt="Loading..."
-              height={1000}
-              width={1000}
-              quality={100}
-              className="h-16 w-16 rounded-full object-cover"
-            />
+            <div className="h-16 w-16 relative">
+              <Image
+                src={
+                  currentUser?.image ||
+                  "https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI="
+                }
+                alt="not found"
+                fill
+                loading="lazy"
+                sizes="(max-width: 64px) 64vw, 64px"
+                quality={70}
+                className="h-16 w-16 rounded-full object-cover"
+              />
+            </div>
             <span>
               <p className="text-2xl flex items-center gap-4">
                 @{currentUser?.username || ""}{" "}
@@ -89,11 +94,7 @@ export default function SideProfile({ currentUser }) {
       <div className="flex items-start justify-center flex-col gap-1">
         <div className="w-full flex items-center justify-start gap-2">
           <p className="text-sm">Learn About This Project</p>
-          <Link
-            className="cursor-pointer"
-            href="/projectrepo"
-            prefetch={true}
-          >
+          <Link className="cursor-pointer" href="/projectrepo" prefetch={true}>
             <i className="fa-solid fa-circle-info"></i>
           </Link>
         </div>

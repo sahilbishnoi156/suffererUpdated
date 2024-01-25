@@ -308,6 +308,7 @@ export default function PostItem({ post, id }) {
               src={post?.image}
               alt="notFound"
               fill
+              loading="lazy"
               sizes="(max-width: 768px) 100vw, 700px"
               className="object-cover select-none rounded-sm"
               draggable={false}

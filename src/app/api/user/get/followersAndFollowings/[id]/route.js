@@ -1,9 +1,14 @@
+import { getTokenData } from "@/helpers/getTokenData";
 import User from "@/models/user";
 import { connectToDB } from "@/utils/database";
 
 export const GET = async (request, { params }) => {
   try {
     await connectToDB();
+    const token = await getTokenData(request)
+    if(!token){
+      return new Response("Invalid Access", { status: 404 });
+    }
     const foundUser = await User.findById(params.id);
 
     if (!foundUser) {

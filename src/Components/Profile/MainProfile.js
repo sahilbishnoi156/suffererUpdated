@@ -10,6 +10,7 @@ import ProfileNavM from "../Modals/ProfileNavM";
 import { Badge, Button, Chip, Tooltip } from "@nextui-org/react";
 import { motion } from "framer-motion";
 import BottomSheetBar from "../BottomSheetBar";
+import Image from "next/image";
 
 export default function MainProfile({
   routeUser,
@@ -166,7 +167,7 @@ export default function MainProfile({
             <div className="flex gap-4 items-center justify-center w-fit">
               {/* common image for mobile & desktop */}
               <div
-                className={`sm:h-40 sm:w-40 h-16 w-16 ${
+                className={`sm:h-40 sm:w-40 h-16 w-16 relative ${
                   !loading && routeUser?.image && "border-2"
                 } rounded-full border-violet-500 p-[2px]`}
               >
@@ -191,10 +192,14 @@ export default function MainProfile({
                     </svg>
                   </div>
                 ) : (
-                  <img
+                  <Image
                     draggable="false"
-                    src={routeUser?.image}
-                    alt="notfound"
+                    src={routeUser?.image || '/next.svg'}
+                    alt="notFound"
+                    fill
+                    quality={100}
+                    loading="lazy"
+                    sizes="(max-width: 160px) 64px, 64px"
                     className="h-full w-full rounded-full object-cover cursor-pointer select-none"
                     onClick={() => setImageClick(true)}
                   />
@@ -224,7 +229,7 @@ export default function MainProfile({
                   <div className="flex items-center gap-2">
                     @{routeUser?.username}
                     {routeUser?.isVerified && (
-                      <img src="/verified.svg" className="h-4 w-4" />
+                      <Image src="/verified.svg" fill sizes="(max-width: 16px) 16vw, 16px" className="h-4 w-4" />
                     )}
                   </div>
                   {pathname === "/profile" ? (

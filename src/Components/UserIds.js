@@ -15,6 +15,7 @@ export default function UserIds({
           <Image
             src={user?.image}
             alt="not found"
+            loading='lazy'
             height={200}
             width={210}
             quality={100}
