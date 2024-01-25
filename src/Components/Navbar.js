@@ -60,6 +60,7 @@ export default function Navbar() {
         <Link
           href="/"
           replace
+          aria-label="Website logo icon"
           className="text-3xl h-full"
           style={{ height: "72px !important" }}
         >
@@ -85,6 +86,7 @@ export default function Navbar() {
           <Link
             href="/"
             replace
+            aria-label="Home icon - go to home icon"
             className="text-xl flex items-center justify-start gap-4 w-full"
             scroll={false}
           >
@@ -100,6 +102,7 @@ export default function Navbar() {
             href="/search"
             className="text-xl flex items-center justify-start gap-4  "
             replace
+            aria-label="Search icon - search users"
             prefetch
             scroll={false}
           >
@@ -115,6 +118,7 @@ export default function Navbar() {
             href="/message"
             className="text-xl flex items-center justify-start gap-4 "
             scroll={false}
+            aria-label="Go to messaging tab"
             replace
           >
             <Badge content={5} color="danger" className="border-none">
@@ -131,6 +135,7 @@ export default function Navbar() {
             href="/notifications"
             className="text-xl flex items-center justify-start gap-4 "
             scroll={false}
+            aria-label="notifications"
             replace
           >
              <Badge content={1} color="danger" className="border-none">
@@ -149,6 +154,7 @@ export default function Navbar() {
                 href={`/profile`}
                 replace
                 prefetch
+                aria-label="check user profile"
                 className="text-xl flex items-center justify-start gap-4 w-full"
                 scroll={false}
               >
@@ -172,6 +178,7 @@ export default function Navbar() {
               href={`/profile`}
               replace
               prefetch
+              aria-label="Go to your profile and customize it"
               className="text-xl flex items-center justify-start gap-4 "
               scroll={false}
             >
@@ -191,6 +198,7 @@ export default function Navbar() {
       >
         <Link
           href="/setting"
+          aria-label="Go to settings"
           className="text-xl flex items-center justify-start gap-4  "
           scroll={false}
           prefetch
@@ -207,6 +215,7 @@ export default function Navbar() {
         <Link
           href="/post/createpost"
           replace
+          aria-label="create new post"
           prefetch
           className="text-xl flex items-center justify-start gap-4  "
         >

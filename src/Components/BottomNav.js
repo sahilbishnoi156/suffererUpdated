@@ -8,7 +8,7 @@ export default function BottomNav() {
   const { currentUserData } = useUserStore();
 
   return (
-    <div
+    <nav
       className={`fixed bottom-0 left-0 z-50 w-full h-14 bg-white border-t border-gray-200 dark:bg-black dark:border-gray-600 ${
         pathname === "/signIn" || pathname === "/signUp" ? "hidden" : "block"
       } text-black dark:text-white`}
@@ -75,6 +75,6 @@ export default function BottomNav() {
             </Link>
           )}
       </div>
-    </div>
+    </nav>
   );
 }

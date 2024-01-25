@@ -416,7 +416,7 @@ export default function PostItem({ post, id }) {
             </div>
           </Tooltip>
         </div>
-        <div className="flex items-center justify-start text-gray-400 text-base w-full">
+        <div className="flex items-center justify-start text-gray-300 text-base w-full">
           {Object.keys(currentUserData).length !== 0 &&
           <CommentM
             buttonData={null}
@@ -442,7 +442,7 @@ export default function PostItem({ post, id }) {
           <input
             type="text"
             name="comment"
-            id="comment"
+            id={`comment-${id}`}
             value={commentInput}
             onChange={(e) => {
               setCommentInput(e.target.value);

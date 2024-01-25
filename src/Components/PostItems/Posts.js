@@ -23,6 +23,7 @@ export default function Posts({
         <div className="w-3/4 self-center flex items-center justify-center flex-col gap-2">
           <h1
             id="post-heading"
+            aria-label="Main Page heading"
             className="text-2xl sm:text-4xl w-full text-center"
           >
             Sufferer

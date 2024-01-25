@@ -27,7 +27,7 @@ export default function ShowUserM({
               <img src="/verified.svg" className="h-4 w-4 ml-4" />
             )}
           </div>
-          <div className="text-xs text-gray-500">
+          <div className="text-xs text-gray-400">
             {postTime || ""} ago
           </div>
         </div>
