@@ -15,7 +15,7 @@ export const metadata = {
   description:
     "Connect and engage with friends, family, and colleagues on the go with our innovative social media networking app. Share updates, photos, and experiences, discover new connections, and stay updated on the latest trends. Join our vibrant community today and experience a new way of staying connected.",
   others: {
-    "twitter:image": "./opengraph-image.png",
+    "twitter:image": "/ogimage.png",
     "twitter:card": "summary_large_image",
     "twitter:domain": "sufferer.vercel.app",
     "twitter:url": "https://sufferer.vercel.app",
@@ -24,52 +24,20 @@ export const metadata = {
     "twitter:description":
       "Connect and engage with friends, family, and colleagues on the go with our innovative social media networking app. Share updates, photos, and experiences, discover new connections, and stay updated on the latest trends. Join our vibrant community today and experience a new way of staying connected.",
     "og:url": "https://sufferer.vercel.app",
-    "og:image": "./opengraph-image.png",
+    "og:image": "/public/ogimage.png",
     "og:type": "website",
     "og:title":
       "Sufferer - Create and share your memories and moments with your friends",
     "og:description":
       "Connect and engage with friends, family, and colleagues on the go with our innovative social media networking app. Share updates, photos, and experiences, discover new connections, and stay updated on the latest trends. Join our vibrant community today and experience a new way of staying connected.",
   },
-};
+};  
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className="dark:bg-black bg-white ">
       <head>
         <meta name="referrer" content="no-referrer" />
-        <title>Welcome To Sufferer</title>
-        <meta
-          name="description"
-          content="Connect and engage with friends, family, and colleagues on the go with our innovative social media networking app. Share updates, photos, and experiences, discover new connections, and stay updated on the latest trends. Join our vibrant community today and experience a new way of staying connected."
-        />
-
-        <meta property="og:url" content="https://sufferer.vercel.app" />
-        <meta property="og:type" content="website" />
-        <meta property="og:title" content="Welcome To Sufferer" />
-        <meta
-          property="og:description"
-          content="Join Sufferer, the leading social media web app designed to foster empathy, understanding, and support among individuals facing lifes challenges. Connect with a compassionate community, share your journey, and find strength in solidarity. Sufferer is your space for shared healing and empowerment. Start your journey towards resilience and support today"
-        />
-
-        <meta
-          property="og:image"
-          content="./opengraph-image.png"
-        />
-
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta property="twitter:domain" content="sufferer.vercel.app" />
-        <meta property="twitter:url" content="https://sufferer.vercel.app" />
-        <meta name="twitter:title" content="Welcome To Sufferer" />
-        <meta
-          name="twitter:description"
-          content="Connect and engage with friends, family, and colleagues on the go with our innovative social media networking app. Share updates, photos, and experiences, discover new connections, and stay updated on the latest trends. Join our vibrant community today and experience a new way of staying connected."
-        />
-
-        <meta
-          name="twitter:image"
-          content="https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885_1280.jpg"
-        />
       </head>
       <body className={`${inter.className}`}>
         <Providers>
