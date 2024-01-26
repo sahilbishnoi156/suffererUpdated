@@ -108,7 +108,10 @@ export default function MainProfile({
 
   // Use Effect
   useEffect(() => {
-    if ((followersAndFollowings.length === 0 && Object.keys(routeUserData).length !== 0) || isGetUserClicked
+    if (
+      (followersAndFollowings.length === 0 &&
+        Object.keys(routeUserData).length !== 0) ||
+      isGetUserClicked
     ) {
       getUsers();
     }
@@ -194,7 +197,7 @@ export default function MainProfile({
                 ) : (
                   <Image
                     draggable="false"
-                    src={routeUser?.image || '/next.svg'}
+                    src={routeUser?.image || "/next.svg"}
                     alt="notFound"
                     fill
                     quality={100}
@@ -229,7 +232,14 @@ export default function MainProfile({
                   <div className="flex items-center gap-2">
                     @{routeUser?.username}
                     {routeUser?.isVerified && (
-                      <Image src="/verified.svg" fill sizes="(max-width: 16px) 16vw, 16px" className="h-4 w-4" />
+                      <div className="h-4 w-4 relative">
+                        <Image
+                          src="/verified.svg"
+                          fill
+                          sizes="(max-width: 16px) 16vw, 16px"
+                          className="h-4 w-4"
+                        />
+                      </div>
                     )}
                   </div>
                   {pathname === "/profile" ? (
@@ -308,7 +318,8 @@ export default function MainProfile({
                 <p className="w-full overflow-auto bg-transparent whitespace-pre-line text-sm mb-2">
                   {routeUser?.about}
                 </p>
-                {pathname === "/profile" || routeUser?.username === currentUserData?.user?.username ? (
+                {pathname === "/profile" ||
+                routeUser?.username === currentUserData?.user?.username ? (
                   <Link href="/setting" prefetch>
                     <Button
                       color="primary"

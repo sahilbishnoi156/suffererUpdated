@@ -13,6 +13,7 @@ import { useUserStore } from "@/stateManagment/zustand";
 import Skeleton from "../Skeleton";
 import CommentInfoM from "./CommentInfoM";
 import { toast } from "react-toastify";
+import Image from "next/image";
 
 export default function CommentM({
   post,
@@ -64,7 +65,7 @@ export default function CommentM({
             <>
               <ModalBody className="p-0 rounded-2xl">
                 <div className="flex items-start flex-col justify-between w-full">
-                  <div className="h-full w-full overflow-hidden cursor-pointer flex items-center justify-between pr-8 border-b-2 dark:border-gray-500 border-black p-4 sticky top-0 left-0 z-[-1] bg-white dark:bg-[#151515] ">
+                  <div className="h-full w-full overflow-hidden cursor-pointer flex items-center justify-between border-b-2 dark:border-gray-500 border-black p-4 sticky top-0 left-0  bg-white dark:bg-[#151515] ">
                     <div className="flex gap-3">
                       <Avatar
                         isBordered
@@ -74,16 +75,37 @@ export default function CommentM({
                         src={post?.creator?.image}
                       />
                       <div className="flex flex-col items-start justify-center">
-                        <h4 className="text-small font-semibold leading-none dark:text-white text-black">
-                          {post?.creator?.username}
-                        </h4>
-                        <h5 className="text-small tracking-tight text-default-500">
+                        <div className="text-small font-semibold leading-none dark:text-white text-black flex gap-2 items-center justify-center">
+                          <span>{post?.creator?.username}</span>
+                          <span>
+                            {post?.creator?.isVerified && (
+                              <div className="h-4 w-4 relative">
+                                <Image
+                                  src="/verified.svg"
+                                  fill
+                                  sizes="(max-width: 16px) 16vw, 16px"
+                                  className="h-4 w-4"
+                                />
+                              </div>
+                            )}
+                          </span>
+                        </div>
+                        <div className="text-small tracking-tight text-default-500">
                           {postTime || ""}
-                        </h5>
+                        </div>
                       </div>
                     </div>
+                    <div
+                      onClick={onClose}
+                      className="hover:bg-gray-600 h-8 w-8 rounded-full flex items-center justify-center"
+                    >
+                      <i class="fa-solid fa-xmark"></i>
+                    </div>
                   </div>
-                  <ScrollShadow size={100} className="w-full flex items-start flex-col gap-8 p-4">
+                  <ScrollShadow
+                    size={100}
+                    className="w-full flex items-start flex-col gap-8 p-4"
+                  >
                     {commentsLoading
                       ? Array.from(
                           {
@@ -273,12 +295,14 @@ export const CommentComponent = ({ item, getComments }) => {
           alt="notFound"
         />
         <div className="flex items-start justify-start flex-col">
-            <div className="text-sm dark:text-white text-black w-full ">
-              <span className="text-base  font-medium">@{item?.creator?.username}</span>
-              <span className="ml-4 dark:text-gray-300 text-neutral-600 pr-2">
-                {item?.content}
-              </span>
-            </div>
+          <div className="text-sm dark:text-white text-black w-full ">
+            <span className="text-base  font-medium">
+              @{item?.creator?.username}
+            </span>
+            <span className="ml-4 dark:text-gray-300 text-neutral-600 pr-2">
+              {item?.content}
+            </span>
+          </div>
           <div className="flex items-start justify-center gap-2 text-xs dark:text-gray-400 text-slate-500">
             <span>{difference.humanize()}</span>
             <span>{commentInfo?.likes?.number || 0} likes</span>
@@ -299,8 +323,8 @@ export const CommentComponent = ({ item, getComments }) => {
       >
         <i
           className={` ${
-            commentInfo?.likes?.isLiked ? "fa-solid" : "fa-regular"
-          } fa-heart cursor-pointer transition duration-300 text-xs`}
+            commentInfo?.likes?.isLiked ? "fa-solid text-red-600" : "fa-regular"
+          } fa-heart cursor-pointer transition duration-300 text-xs `}
         />
       </button>
     </div>
