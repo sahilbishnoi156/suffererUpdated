@@ -2,9 +2,9 @@ import { NextResponse } from 'next/server';
 const publicPaths = ['/signIn', '/signUp','/welcome','/message/inbox'];
 
 
-export function middleware(request) {
+export async function middleware(request) {
   const path = request.nextUrl.pathname;
-  const authToken = request.cookies.get("authToken")?.value ;
+  const authToken = await request.cookies.get("authToken")?.value ;
   if(path === '/'){
     if (authToken) {
       return NextResponse.next();
