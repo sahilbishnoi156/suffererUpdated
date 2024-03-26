@@ -1,11 +1,18 @@
 import { connectToDB } from "@/utils/database";
 import Post from "@/models/post";
 import User from "@/models/user";
+import { getTokenData } from "@/helpers/getTokenData";
 
 const DEFAULT_START_LIMIT = 0;
 
 const fetchPosts = async (userId, _start, _limit) => {
   await connectToDB();
+  const tokenData = await getTokenData(request);
+    if (!tokenData) {
+      return new Response(JSON.stringify({ error: "Unauthorized access" }), {
+        status: 401,
+      });
+    }
   // Fetch followed accounts
   const followedAccounts = await User.findById(userId).select("followings").populate("followings");
 

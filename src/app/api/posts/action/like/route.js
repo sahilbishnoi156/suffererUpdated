@@ -7,6 +7,11 @@ const ObjectId = mongoose.Types.ObjectId;
 
 export const PATCH = async (request) => {
   const tokenData = await getTokenData(request);
+    if (!tokenData) {
+      return new Response(JSON.stringify({ error: "Unauthorized access" }), {
+        status: 401,
+      });
+    }
   const userId = tokenData._id;
   if (request.method !== "PATCH") {
     return new Response("Method not allowed", { status: 405 });

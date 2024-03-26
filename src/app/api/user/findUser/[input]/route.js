@@ -1,9 +1,16 @@
+import { getTokenData } from "@/helpers/getTokenData";
 import User from "@/models/user";
 import { connectToDB } from "@/utils/database";
 
 export const GET = async (request, { params }) => {
     try {
         await connectToDB();
+        const tokenData = await getTokenData(request);
+        if (!tokenData) {
+          return new Response(JSON.stringify({ error: "Unauthorized access" }), {
+            status: 404,
+          });
+        }
         
         // Create a regular expression with 'params.input' to find partial matches
         const decodedInput = decodeURIComponent(params.input);

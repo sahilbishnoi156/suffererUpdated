@@ -9,6 +9,11 @@ export const PATCH = async (request) => {
     return new Response("Method not allowed", { status: 405 });
   }
   const tokenData = await getTokenData(request);
+    if (!tokenData) {
+      return new Response(JSON.stringify({ error: "Unauthorized access" }), {
+        status: 401,
+      });
+    }
   const id = tokenData._id;
   if (tokenData === undefined) {
     return new Response("Invalid Access to post", { status: 404 });

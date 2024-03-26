@@ -13,7 +13,12 @@ export const PATCH = async (request) => {
       return new Response("Method not allowed", { status: 405 });
     }
     const { postId } = await request.json();
-    const tokenData = await getTokenData(request)
+    const tokenData = await getTokenData(request);
+    if (!tokenData) {
+      return new Response(JSON.stringify({ error: "Unauthorized access" }), {
+        status: 401,
+      });
+    }
     const userId = tokenData._id;
 
     // Find the existing follower and following users by their IDs

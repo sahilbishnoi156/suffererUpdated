@@ -10,7 +10,7 @@ export const GET = async (request) => {
 
     const token = await getTokenData(request);
     if(!token){
-      return new Response("Token Not Found", { status: 404 });
+      return new Response("Unauthorized access", { status: 401 });
     }
     const currentUserId = token._id;
     const currentUserIdObj = new ObjectId(currentUserId);

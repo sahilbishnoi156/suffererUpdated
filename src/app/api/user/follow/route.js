@@ -9,9 +9,15 @@ export const PATCH = async (request) => {
     if (request.method !== "PATCH") {
       return new Response("Method not allowed", { status: 405 });
     }
+    
 
     const { followedUserUsername } = await request.json();
     const token = await getTokenData(request);
+    if (!token) {
+      return new Response(JSON.stringify({ error: "Unauthorized access" }), {
+        status: 404,
+      });
+    }
     const followerId = token._id;
     const followerUserUsername = token.username;
 
@@ -30,19 +36,27 @@ export const PATCH = async (request) => {
 
     const followedAt = new Date();
     // Check if the follower is already following the followed user
-    if (followedUser.followers.some((user)=> user._id.toString() === followerUser?._id.toString())) {
+    if (
+      followedUser.followers.some(
+        (user) => user._id.toString() === followerUser?._id.toString()
+      )
+    ) {
       // Unfollow: Remove followerUser from followedUser's followers list
-      followedUser.followers = followedUser.followers.filter(user => user._id.toString() !== followerUser?._id.toString());
+      followedUser.followers = followedUser.followers.filter(
+        (user) => user._id.toString() !== followerUser?._id.toString()
+      );
       // Remove followedUser from followerUser's following list
-      followerUser.followings = followerUser.followings.filter(user => user._id.toString() !== followedUser._id.toString());
+      followerUser.followings = followerUser.followings.filter(
+        (user) => user._id.toString() !== followedUser._id.toString()
+      );
     } else {
       // Follow: Add followerId to followedUser's followers list
 
-      const newId1 = new ObjectId(followerId)
-      followedUser.followers.push({_id:newId1, followedAt});
+      const newId1 = new ObjectId(followerId);
+      followedUser.followers.push({ _id: newId1, followedAt });
       // Add followedUser to followerUser's following list
-      const newId2 = new ObjectId(followedUser._id)
-      followerUser.followings.push({_id:newId2, followedAt});
+      const newId2 = new ObjectId(followedUser._id);
+      followerUser.followings.push({ _id: newId2, followedAt });
     }
 
     // Save both updated users
@@ -55,8 +69,11 @@ export const PATCH = async (request) => {
     });
   } catch (error) {
     console.error("Error Updating User:", error);
-    return new Response(JSON.stringify({ status: 500, error: "Error Updating User" }), {
-      headers: { "Content-Type": "application/json" },
-    });
+    return new Response(
+      JSON.stringify({ status: 500, error: "Error Updating User" }),
+      {
+        headers: { "Content-Type": "application/json" },
+      }
+    );
   }
 };

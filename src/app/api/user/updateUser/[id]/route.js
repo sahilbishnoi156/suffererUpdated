@@ -1,3 +1,4 @@
+import { getTokenData } from "@/helpers/getTokenData";
 import User from "@/models/user";
 import { connectToDB } from "@/utils/database";
 
@@ -6,6 +7,12 @@ export const PATCH = async (request, { params }) => {
 
     try {
         await connectToDB();
+        const tokenData = await getTokenData(request);
+        if (!tokenData) {
+          return new Response(JSON.stringify({ error: "Unauthorized access" }), {
+            status: 401,
+          });
+        }
         // Find the existing prompt by ID
         const existingUser = await User.findById(params.id);
         if (!existingUser) {

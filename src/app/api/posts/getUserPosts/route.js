@@ -3,10 +3,17 @@ import Post from "@/models/post"; // Assuming you have a Post model
 import { connectToDB } from "@/utils/database";
 import jwt from "jsonwebtoken";
 import { NextResponse } from "next/server";
+import { getTokenData } from "@/helpers/getTokenData";
 
 export const POST = async (request) => {
   try {
     await connectToDB();
+    const tokenData = await getTokenData(request);
+    if (!tokenData) {
+      return new Response(JSON.stringify({ error: "Unauthorized access" }), {
+        status: 401,
+      });
+    }
     const { username, postType } = await request.json();
 
     // Find the user
