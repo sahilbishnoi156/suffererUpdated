@@ -7,18 +7,17 @@ const DEFAULT_START_LIMIT = 0;
 
 const fetchPosts = async (userId, _start, _limit) => {
   await connectToDB();
-  const tokenData = await getTokenData(request);
-    if (!tokenData) {
-      return new Response(JSON.stringify({ error: "Unauthorized access" }), {
-        status: 401,
-      });
-    }
   // Fetch followed accounts
-  const followedAccounts = await User.findById(userId).select("followings").populate("followings");
+  const followedAccounts = await User.findById(userId)
+    .select("followings")
+    .populate("followings");
 
   try {
     // Query posts from followed accounts
-    const followedPosts = await Post.find({ creator: { $in: followedAccounts.followings } }).populate('creator')
+    const followedPosts = await Post.find({
+      creator: { $in: followedAccounts.followings },
+    })
+      .populate("creator")
       .sort({ createdAt: -1 })
       .skip(_start)
       .limit(_limit);
@@ -26,7 +25,8 @@ const fetchPosts = async (userId, _start, _limit) => {
     // If followed posts are less than the limit, fetch additional content
     if (followedPosts.length < _limit) {
       // Fetch trending posts (adjust query based on your logic)
-      const trendingPosts = await Post.find({ trending: true }).populate('creator')
+      const trendingPosts = await Post.find({ trending: true })
+        .populate("creator")
         .sort({ createdAt: -1 })
         .limit(_limit - followedPosts.length);
 
@@ -35,18 +35,27 @@ const fetchPosts = async (userId, _start, _limit) => {
 
       return {
         posts,
-        totalPosts: await Post.countDocuments({ creator: { $in: followedAccounts.following } }), // Count only followed posts
+        totalPosts: await Post.countDocuments({
+          creator: { $in: followedAccounts.following },
+        }), // Count only followed posts
       };
     } else {
       return {
         posts: followedPosts,
-        totalPosts: await Post.countDocuments({ creator: { $in: followedAccounts.following } }),
+        totalPosts: await Post.countDocuments({
+          creator: { $in: followedAccounts.following },
+        }),
       };
     }
   } catch (error) {
-    if (error.code === 17010) { // No posts from followed accounts
+    if (error.code === 17010) {
+      // No posts from followed accounts
       // Fallback to global posts
-      const fallbackPosts = await Post.find().populate('creator').sort({ createdAt: -1 }).skip(_start).limit(_limit);
+      const fallbackPosts = await Post.find()
+        .populate("creator")
+        .sort({ createdAt: -1 })
+        .skip(_start)
+        .limit(_limit);
       return {
         posts: fallbackPosts,
         totalPosts: await Post.countDocuments(),
@@ -58,24 +67,27 @@ const fetchPosts = async (userId, _start, _limit) => {
   }
 };
 
-
-
-
 export const POST = async (request) => {
-  const url = new URL(request.url);
-  const searchParams = new URLSearchParams(url.search);
-  const _start = parseInt(searchParams.get("_start")) || DEFAULT_START_LIMIT;
-  const _limit = parseInt(searchParams.get("_limit")) || 4;
-  const {userId} = await request.json();
   try {
-    const { posts, totalPosts } = await fetchPosts(userId,_start, _limit);
+    const url = new URL(request.url);
+    const searchParams = new URLSearchParams(url.search);
+    const _start = parseInt(searchParams.get("_start")) || DEFAULT_START_LIMIT;
+    const _limit = parseInt(searchParams.get("_limit")) || 4;
+    const { userId } = await request.json();
+    const tokenData = await getTokenData(request);
+    if (!tokenData) {
+      return new Response(JSON.stringify({ error: "Unauthorized access" }), {
+        status: 401,
+      });
+    }
+    const { posts, totalPosts } = await fetchPosts(userId, _start, _limit);
     const responseBody = {
       posts: posts,
       totalPosts,
     };
     return new Response(JSON.stringify(responseBody), { status: 200 });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     const errorResponse = {
       error: "Failed to get posts",
       errorMessage: error.message,
