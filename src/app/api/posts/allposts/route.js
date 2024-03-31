@@ -11,11 +11,18 @@ export const GET = async (request) => {
         status: 401,
       });
     }
-    const allPosts = await Post.find({}).populate("creator");
+    const allPosts = await Post.find({}).populate("creator").limit(4);
     const totalPosts = allPosts.length;
-    return new Response(JSON.stringify({posts:allPosts, totalPosts}), { status: 200 });
+    return new Response(JSON.stringify({ posts: allPosts, totalPosts }), {
+      status: 200,
+    });
   } catch (error) {
-    return new Response(JSON.stringify({ error: "Failed to get posts", errorMessage: error.message }), { status: 500 });
-
+    return new Response(
+      JSON.stringify({
+        error: "Failed to get posts",
+        errorMessage: error.message,
+      }),
+      { status: 500 }
+    );
   }
 };

@@ -11,7 +11,7 @@ export const POST = async (request) => {
     await connectToDB();
     const userExists = await User.findOne({email:email});
     if (!userExists) {
-      return NextResponse.json({ userFound:false }, { status: 200 })
+      return NextResponse.json({ userFound: false }, { status: 200 })
     }
     const isMatch = await bcrypt.compare(password, userExists.password);
 

@@ -4,18 +4,17 @@ import { getTokenData } from "@/helpers/getTokenData";
 export const GET = async (request) => {
   try {
     await connectToDB();
-    console.log('object');
-    const tokenData = await getTokenData(request);
-    if (!tokenData) {
-      return new Response(JSON.stringify({ error: "Token Not Found" }), {
+    const token = (await request.cookies.get("authToken"))?.value;
+    if (!token) {
+      return new Response(JSON.stringify({ isLoggedIn: false }), {
         status: 404,
       });
     }
-    return new Response(JSON.stringify({ success: true }), {
+    return new Response(JSON.stringify({ isLoggedIn: true }), {
       status: 200,
     });
   } catch (error) {
     console.log(error);
-    return new Response("Error Updating User", { status: 500 });
+    return new Response({ message: "Something Went Wrong" }, { status: 200 });
   }
 };

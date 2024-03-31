@@ -26,7 +26,7 @@ export const GET = async (request, { params }) => {
         };
         
         // Perform the search using the 'User' model with the regular expression query
-        const users = await User.find(searchQuery);
+        const users = await User.find(searchQuery).limit(10);
         
         return new Response(JSON.stringify(users), { status: 200 });
     } catch (error) {
