@@ -6,6 +6,7 @@ export async function middleware(request) {
   const path = request.nextUrl.pathname;
   const authToken = await request.cookies.get("authToken")?.value ;
   if(path === '/'){
+    console.log(authToken);
     if (authToken) {
       return NextResponse.next();
     }
